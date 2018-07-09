@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MechanicalComponents", "MechanicalComponents\MechanicalComponents.csproj", "{8D6A53E2-B40F-4131-8BC0-6E32C29667C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MechanicalComponents.Test", "MechanicalComponents.Test\MechanicalComponents.Test.csproj", "{886D4B77-07E1-4B9D-9689-5D1BDB7B676F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL Queries", "SQL Queries", "{7C8B501C-3678-4D4C-BBA6-F70C8A612249}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8D6A53E2-B40F-4131-8BC0-6E32C29667C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D6A53E2-B40F-4131-8BC0-6E32C29667C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D6A53E2-B40F-4131-8BC0-6E32C29667C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D6A53E2-B40F-4131-8BC0-6E32C29667C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{886D4B77-07E1-4B9D-9689-5D1BDB7B676F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{886D4B77-07E1-4B9D-9689-5D1BDB7B676F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{886D4B77-07E1-4B9D-9689-5D1BDB7B676F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{886D4B77-07E1-4B9D-9689-5D1BDB7B676F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B4999040-7C20-4FCE-AA23-87CB7DCD68ED}
+	EndGlobalSection
+EndGlobal
