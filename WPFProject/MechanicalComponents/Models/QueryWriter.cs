@@ -23,8 +23,10 @@ namespace MechanicalComponents.Models
 
         public string AddChildComponentsQuery(Node n, string childName, string childSerialCode)
         {
-            Node child = new Node(childName, childSerialCode)
+            Node child = new Node()
             {
+                Name = childName,
+                SerialCode = childSerialCode,
                 QueryWriter = new ComponentQueryWriter()
             };
 

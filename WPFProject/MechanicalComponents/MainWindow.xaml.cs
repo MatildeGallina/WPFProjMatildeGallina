@@ -23,6 +23,42 @@ namespace MechanicalComponents
         public MainWindow()
         {
             InitializeComponent();
+
+            var dbConn = new Database(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MechanicalComponentsDatabase;Integrated Security=True;Connect Timeout=15;");
+            var conn = dbConn.CreateConnection();
+
+            EnginesTreeView.ItemsSource = EngineBranches(conn);
+
+            }
+
+        private List<Node> EngineBranches(SqlConnection conn)
+        {
+            SqlCommand comm = conn.CreateCommand();
+
+            comm.CommandType = CommandType.Text;
+            comm.CommandText = "select * from Engines";
+
+            SqlDataReader reader = comm.ExecuteReader();
+
+            List<Node> engines = new List<Node>();
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    Node e = new Node
+                    {
+                        Id = reader.GetInt32(0),
+                        Name = reader.GetString(1),
+                        SerialCode = reader.GetString(2)
+                    };
+
+
+                    engines.Add(e);
+                }
+            }
+
+            return engines;
         }
     }
 }

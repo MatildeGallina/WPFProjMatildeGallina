@@ -72,10 +72,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Database.cs" />
+    <Compile Include="Models\MyDataReader.cs" />
     <Compile Include="Models\IDatabase.cs" />
-    <Compile Include="Models\Node.cs" />
+    <Compile Include="Models\IDataReader.cs" />
     <Compile Include="Models\INode.cs" />
     <Compile Include="Models\IQueryWriter.cs" />
+    <Compile Include="Models\Node.cs" />
     <Compile Include="Models\QueryWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

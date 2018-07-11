@@ -12,7 +12,7 @@ namespace MechanicalComponents.Test
         [TestMethod]
         public void create_and_open_Connection_succesfully()
         {
-            var dbConn = new Database(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MechanicalComponentsDatabase;Integrated Security=True;Connect Timeout=15;");
+            var dbConn = new Database("");
             var conn = dbConn.CreateConnection();
 
             Assert.AreEqual(conn.State, ConnectionState.Open);
@@ -41,12 +41,12 @@ namespace MechanicalComponents.Test
         [TestMethod]
         public void query_of_Select_return_the_correct_Id()
         {
-            var dbConn = new Database(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MechanicalComponentsDatabase;Integrated Security=True;Connect Timeout=15;");
+            var dbConn = new Database("");
             var conn = dbConn.CreateConnection();
 
-            Node n = new Node("29CV 2 cilindri", "1020304050");
+            //Node n = new Node("29CV 2 cilindri", "1020304050");
 
-            string dbConn.NewQuery(conn, n) = n.QueryWriter.RetriveDataQuery(n);
+            //string dbConn.NewQuery(conn, n) = n.QueryWriter.RetriveDataQuery(n);
 
         }
 

@@ -16,9 +16,11 @@ namespace MechanicalComponents.Models
                 List<Node> nodes = new List<Node>();
                 while (reader.Read())
                 {
-                    Node child = new Node(reader.GetString(1), reader.GetString(2))
+                    Node child = new Node()
                     {
                         Id = reader.GetInt32(0),
+                        Name = reader.GetString(1),
+                        SerialCode = reader.GetString(2),
                         IconId = reader.GetInt32(4)
                     };
 
