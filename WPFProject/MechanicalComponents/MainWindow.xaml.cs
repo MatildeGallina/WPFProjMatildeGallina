@@ -18,9 +18,6 @@ using MechanicalComponents.Models;
 
 namespace MechanicalComponents
 {
-    /// <summary>
-    /// Logica di interazione per MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()

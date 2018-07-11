@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MechanicalComponents.Models
 {
-    interface IElement
+    interface INode
     {
     }
 }

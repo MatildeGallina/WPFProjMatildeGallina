@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace MechanicalComponents.Models
 {
-    public class Element
+    public class Node
     {
         protected int Id { get; set; }
         protected string Name { get; set; }
         protected string SerialCode { get; set; }
-        protected List<Element> elements { get; set; }
+        protected List<Node> Components { get; set; }
         protected IQueryWriter QueryWriter { get; set; }
     }
 }

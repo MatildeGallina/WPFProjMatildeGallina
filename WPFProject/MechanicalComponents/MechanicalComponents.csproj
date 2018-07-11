@@ -72,8 +72,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\DatabaseConnection.cs" />
-    <Compile Include="Models\Element.cs" />
-    <Compile Include="Models\IElement.cs" />
+    <Compile Include="Models\Node.cs" />
+    <Compile Include="Models\INode.cs" />
     <Compile Include="Models\IQueryWriter.cs" />
     <Compile Include="Models\QueryWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
