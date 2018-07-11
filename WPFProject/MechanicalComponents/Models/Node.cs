@@ -9,10 +9,22 @@ namespace MechanicalComponents.Models
 {
     public class Node
     {
-        protected int Id { get; set; }
-        protected string Name { get; set; }
-        protected string SerialCode { get; set; }
+        public Node(string name, string serialCode)
+        {
+            Name = name;
+            SerialCode = serialCode;
+        }
+
+        internal int Id { get; set; }
+        internal string Name { get; set; }
+        internal string SerialCode { get; set; }
+        internal int ParentId { get; set; }
+        internal int IconId { get; set; }
+        internal string Query { get; set; }
+        
         protected List<Node> Components { get; set; }
-        protected IQueryWriter QueryWriter { get; set; }
+
+        public IQueryWriter QueryWriter { get; set; }
+        public IDataReader DataReader { get; set; }
     }
 }

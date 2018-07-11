@@ -9,62 +9,111 @@ namespace MechanicalComponents.Models
 {
     public abstract class QueryWriter : IQueryWriter
     {
-        public abstract string AddForeignKeyValue(int ElementId);
-        public abstract string InsertNewElement(string Name, string SerialCode);
-        public abstract string RetriveFromDatabase();
+        public string RetriveDataQuery(Node n)
+        {
+            return $"select * from {GetTableName()} where Id = {n.Id}";
+        }
+
+        public string FindChildrenComponentsQuery(Node n)
+        {
+            return $"select c.Name " +
+                $"from Components as c " +
+                FilterData(n);
+        }
+
+        public string AddChildComponentsQuery(Node n, string childName, string childSerialCode)
+        {
+            Node child = new Node(childName, childSerialCode)
+            {
+                QueryWriter = new ComponentQueryWriter()
+            };
+
+            return "insert into Components " +
+                "(Name, SerialCode, EngineId, IconId, ComponentId) " +
+                "values " +
+                InsertValues(n, child);
+        }
+
+        public abstract string RetriveProperiesQuery(Node n);
+
+        public abstract string AddPropertiesQuery(Node n);
+
+        internal abstract object GetTableName();
+
+        public abstract string ChangePropertiesQuery(Node n);
+
+        internal abstract string FilterData(Node n);
+
+        internal abstract string InsertValues(Node n, Node child);
     }
 
     class EngineQueryWriter : QueryWriter
     {
-        public override string AddForeignKeyValue(int ElementId)
+        internal override object GetTableName()
         {
-            throw new NotImplementedException();
+            return "Engines ";
         }
 
-        public override string InsertNewElement(string Name, string SerialCode)
+        internal override string FilterData(Node n)
         {
-            throw new NotImplementedException();
+            return $"where {n.Id} = c.EngineId";
         }
 
-        public override string RetriveFromDatabase()
+        internal override string InsertValues(Node n, Node child)
         {
-            throw new NotImplementedException();
+            return $"('{child.Name}', '{child.SerialCode}', {n.Id}, 1, NULL)";
+        }
+
+        public override string RetriveProperiesQuery(Node n)
+        {
+            throw new Exception("An engine has no properties");
+        }
+
+        public override string AddPropertiesQuery(Node n)
+        {
+            throw new Exception("An engine has no properties");
+        }
+
+        public override string ChangePropertiesQuery(Node n)
+        {
+            throw new Exception("An engine has no properties");
         }
     }
 
     class ComponentQueryWriter : QueryWriter
-    {
-        public override string AddForeignKeyValue(int ElementId)
+    { 
+        internal override object GetTableName()
         {
-            throw new NotImplementedException();
+            return "Components ";
         }
 
-        public override string InsertNewElement(string Name, string SerialCode)
+        internal override string FilterData(Node n)
         {
-            throw new NotImplementedException();
+            return $"where {n.Id} = c.ComponentId";
         }
 
-        public override string RetriveFromDatabase()
+        internal override string InsertValues(Node n, Node child)
         {
-            throw new NotImplementedException();
-        }
-    }
-
-    class ChildQueryWriter : QueryWriter
-    {
-        public override string AddForeignKeyValue(int ElementId)
-        {
-            throw new NotImplementedException();
+            return $"('{child.Name}', '{child.SerialCode}', NULL, 1, {n.Id})";
         }
 
-        public override string InsertNewElement(string Name, string SerialCode)
+        public override string RetriveProperiesQuery(Node n)
         {
-            throw new NotImplementedException();
+            return $"select * from Properties where ComponentId = {n.Id}";
         }
 
-        public override string RetriveFromDatabase()
+        public override string AddPropertiesQuery(Node n)
         {
             throw new NotImplementedException();
+
+            // implementare usando il pattern null object
+        }
+
+        public override string ChangePropertiesQuery(Node n)
+        {
+            throw new NotImplementedException();
+
+            // implementare usando il pattern null object
         }
     }
 }

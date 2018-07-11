@@ -8,8 +8,11 @@ namespace MechanicalComponents.Models
 {
     public interface IQueryWriter
     {
-        string InsertNewElement(string Name, string SerialCode);
-        string AddForeignKeyValue(int ElementId);
-        string RetriveFromDatabase();
+        string RetriveDataQuery(Node n);
+        string FindChildrenComponentsQuery(Node n);
+        string AddChildComponentsQuery(Node n, string childName, string childSerialCode);
+        string RetriveProperiesQuery(Node n);
+        string AddPropertiesQuery(Node n);
+        string ChangePropertiesQuery(Node n);
     }
 }
