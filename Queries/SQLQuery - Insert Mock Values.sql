@@ -1,85 +1,68 @@
 use MechanicalComponentsDatabase
+go
 
--- insertion of some engines
-
-insert into Engines
+insert into Nodes
 (Name, SerialCode)
 values
-('29CV 2 cilindri', '102030405')
+('29CV 2 cilindri', '1020304056')
 
-insert into Engines
+insert into Nodes
 (Name, SerialCode)
 values
-('54CV 4 cilindri', '100200300')
+('54CV 4 cilindri', '1002003004')
 
-insert into Engines
+insert into Nodes
 (Name, SerialCode)
 values
-('190 CV 4 cilindri', '101202303')
+('190 CV 4 cilindri', '1012023034')
 
-
--- insertion of some icons
-insert into Icons(Image) values (NULL)
-insert into Icons(Image) values (NULL)
-insert into Icons(Image) values (NULL) 
-
-
--- insertion of some components
-
-insert into Components
-(Name, SerialCode, EngineId, IconId)
+insert into Nodes
+(Name, SerialCode, ParentId)
 values
-('Candela Glow', 'AAA000111', 1, 1)
+('Candela Glow', 'AAA000111B', 1)
 
-
-insert into Components
-(Name, SerialCode, EngineId, IconId)
+insert into Nodes
+(Name, SerialCode, ParentId)
 values
-('Carburatore', 'AAA111222', 1, 2)
+('Carburatore', 'AAA111222B', 1)
 
-
-insert into Components
-(Name, SerialCode, EngineId, IconId)
+insert into Nodes
+(Name, SerialCode, ParentId)
 values
-('Gruppo termico', 'AAA222333', 1, 3)
+('Gruppo termico', 'AAA222333B', 1)
 
-
-insert into Components
-(Name, SerialCode, EngineId, IconId)
+insert into Nodes
+(Name, SerialCode, ParentId)
 values
-('Spinotto', 'BBB000111', 2, 3)
+('Spinotto', 'BBB000111C', 2)
 
-
-insert into Components
-(Name, SerialCode, EngineId, IconId)
+insert into Nodes
+(Name, SerialCode, ParentId)
 values
-('Monoblocco', 'BBB111222', 2, 1) 
+('Monoblocco', 'BBB111222C', 2)
 
-insert into Components
-(Name, SerialCode, EngineId, IconId)
+insert into Nodes
+(Name, SerialCode, ParentId)
 values
-('iniettore', 'CCC000111', 3, 1)
+('iniettore', 'CCC000111D', 3)
 
-
-insert into Components
-(Name, SerialCode, EngineId, IconId)
+insert into Nodes
+(Name, SerialCode, ParentId)
 values
-('Cilindro ruotante', 'CCC111222', 3, 2)
+('Cilindro ruotante', 'CCC111222D', 3)
 
-
-insert into Components
-(Name, SerialCode, EngineId, IconId)
+insert into Nodes
+(Name, SerialCode, ParentId)
 values
-('Albero di trasmissione', 'CCC222333', 3, 1)
+('Albero di trasmissione', 'CCC222333D', 3)
 
-
-insert into Components
-(Name, SerialCode, EngineId, IconId)
+insert into Nodes
+(Name, SerialCode, ParentId)
 values
-('Cambio', 'CCC333444', 3, 3)
+('Cambio', 'CCC333444D', 3)
 
-
-insert into Components
-(Name, SerialCode, EngineId, IconId)
+insert into Nodes
+(Name, SerialCode, ParentId)
 values
-('Spinterogeno', 'CCC444555', 3, 3)
+('Spinterogeno', 'CCC444555D', 3)
+
