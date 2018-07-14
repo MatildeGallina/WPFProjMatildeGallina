@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MechanicalComponents.Models
 {
-    interface IQueryFactory
+    public interface IQueryWriter
     {
         string GetNodesQuery(int? Id);
         string SetNodeQuery(Node n);

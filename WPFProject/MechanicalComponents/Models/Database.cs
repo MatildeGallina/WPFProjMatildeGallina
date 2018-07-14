@@ -1,49 +1,81 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MechanicalComponents.Models
 {
     public class Database : IDatabase
     {
+        private List<Node> _nodes { get; set; }
+        private QueryWriter _queryWriter { get; set; }
+
         public void SetConnectionString(string connectionString)
         {
             _connectionString = connectionString;
         }
-        private string _connectionString { get; set; }
-
-        private List<Node> _nodes;
-
+        private string _connectionString;
+        
         public SqlConnection CreateConnection()
         {
             return new SqlConnection(_connectionString);
         }
 
-        public List<Node> GetNodes()
+        public List<Node> GetNodes(int? Id)
         {
-            throw new NotImplementedException();
+            using (var conn = CreateConnection())
+            using (var comm = conn.CreateCommand())
+            {
+                conn.Open();
+                comm.CommandType = CommandType.Text;
+                comm.CommandText = _queryWriter.GetNodesQuery(Id);
+                UpdateList(comm);
+            }
+
+            return _nodes;
+        }
+        
+        public void SetNode(Node node)
+        {
+            using (var conn = CreateConnection())
+            using(var comm = conn.CreateCommand())
+            {
+                conn.Open();
+                comm.CommandType = CommandType.Text;
+                comm.CommandText = _queryWriter.SetNodeQuery(node);
+
+                comm.ExecuteNonQuery();
+                //node.Id = (int)comm.ExecuteScalar();
+            }
         }
 
-        public Node GetInformations()
+        private void UpdateList(SqlCommand comm)
         {
-            throw new NotImplementedException();
+            SqlDataReader reader = comm.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Node node = new Node
+                {
+                    Id = (int)reader["Id"],
+                    Name = (string)reader["Name"],
+                    SerialCode = (string)reader["SerialCode"],
+                    ParentId = (int?)reader["ParentId"]
+                };
+                _nodes.Add(node);
+            }
         }
 
-        public void SetNode()
+        public  Database()
         {
-            throw new NotImplementedException();
+            _nodes = new List<Node>();
+            _queryWriter = new QueryWriter();
         }
-
-        private  Database() { }
 
         static Database()
         {
             Instance = new Database();
         }
+        
         private static Database Instance { get; }
     }
 }

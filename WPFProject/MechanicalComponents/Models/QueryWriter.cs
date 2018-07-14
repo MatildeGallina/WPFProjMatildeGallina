@@ -6,19 +6,21 @@ using System.Threading.Tasks;
 
 namespace MechanicalComponents.Models
 {
-    class Query : IQueryFactory
+    class QueryWriter : IQueryWriter
     {
         public string GetNodesQuery(int? Id)
         {
-            return $"select * from Nodes where Id = {Id}";
+            return $"select * from Nodes " +
+                $"where Id = {Id} ";
         }
 
         public string SetNodeQuery(Node node)
         {
-            return $"insert into Node" +
-                $"(Name, SerialCode, ParentId)" +
-                $"values" +
-                $"('{node.Name}', '{node.SerialCode}', {node.ParentId})";
+            return $"insert into Nodes " +
+                $"(Name, SerialCode, ParentId) " +
+                //$"OUTPUT Inserted.ID " +
+                $"values " +
+                $"('{node.Name}', '{node.SerialCode}', {node.ParentId}) ";
         }
     }
 }

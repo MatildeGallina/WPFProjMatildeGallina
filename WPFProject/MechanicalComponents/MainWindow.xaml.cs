@@ -24,12 +24,26 @@ namespace MechanicalComponents
         {
             InitializeComponent();
 
-            var dbConn = new Database(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MechanicalComponentsDatabase;Integrated Security=True;Connect Timeout=15;");
-            var conn = dbConn.CreateConnection();
+            //var dbConn = new Database(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MechanicalComponentsDatabase;Integrated Security=True;Connect Timeout=15;");
+            //var conn = dbConn.CreateConnection();
 
-            EnginesTreeView.ItemsSource = EngineBranches(conn);
+            //EnginesTreeView.ItemsSource = EngineBranches(conn);
 
-            }
+            var db = new Database();
+            db.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MechanicalComponentsDatabase;Integrated Security=True;Connect Timeout=15;");
+            db.CreateConnection();
+
+            Node node = new Node()
+            {
+                Name = "Prova",
+                SerialCode = "AAA111222C",
+                ParentId = 0
+            };
+
+            db.SetNode(node);
+
+            EnginesTreeView.ItemsSource = db.GetNodes(1);
+        }
 
         private List<Node> EngineBranches(SqlConnection conn)
         {
