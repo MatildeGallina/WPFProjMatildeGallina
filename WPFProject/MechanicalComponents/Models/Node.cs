@@ -8,11 +8,11 @@ namespace MechanicalComponents.Models
 {
     public class Node
     {
-        //public Node(string name, string serialCode)
-        //{
-        //    Name = name;
-        //    SerialCode = serialCode;
-        //}
+        public Node(Database database)
+        {
+            _database = database;
+            _Children = new Lazy<List<Node>>(LoadChildren);
+        }
 
         internal int Id { get; set; }
         public string Name { get; set; }
@@ -20,12 +20,17 @@ namespace MechanicalComponents.Models
         internal int? ParentId { get; set; }
         internal int? IconId { get; set; }
 
+        public List<Node> Children
+        {
+            get { return _Children.Value; }
+        }
+        private Lazy<List<Node>> _Children;
 
-        //internal string Query { get; set; }
+        private List<Node> LoadChildren()
+        {
+            return _database.GetNodes(this.Id);
+        }
 
-        //protected List<Node> Components { get; set; }
-
-        //public IQueryWriter QueryWriter { get; set; }
-        //public IDataReader DataReader { get; set; }
+        private Database _database;
     }
 }
