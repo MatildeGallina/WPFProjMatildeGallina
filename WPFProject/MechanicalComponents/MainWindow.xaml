@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MechanicalComponents"
+        xmlns:local="clr-namespace:MechanicalComponents.Models"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
@@ -37,11 +37,11 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0">
-                    <TreeView Name="EnginesTreeView">
+                    <TreeView Name="EnginesTreeView" MouseDoubleClick="EnginesTreeView_MouseDoubleClick">
                         <TreeView.Resources>
                             <HierarchicalDataTemplate
-                                DataType="{x:Type local:MainWindow}"
-                                ItemsSource="{Binding Components}">
+                                DataType="{x:Type local:Node}"
+                                ItemsSource="{Binding engines}">
                                 <StackPanel Orientation="Horizontal"
                                     Margin="10">
                                     <TextBlock Text="{Binding Name}" />
@@ -57,7 +57,7 @@
             </Grid>
         </StackPanel>
         <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right">
-            <StackPanel>
+            <StackPanel Name="BasicInformations" Visibility="Hidden">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -78,8 +78,8 @@
                             Name="AddNewChild" Content="Add child" Click="AddNewChild_Click"/>
                 </Grid>
             </StackPanel>
-            <StackPanel>
-                <Grid>
+            <StackPanel Name="Properties" Visibility="Hidden">
+                <Grid >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>

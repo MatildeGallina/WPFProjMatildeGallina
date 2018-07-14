@@ -20,14 +20,14 @@ namespace MechanicalComponents.Models
             return new SqlConnection(_connectionString);
         }
 
-        public List<Node> GetNodes(int? Id)
+        public List<Node> GetNodes(int? ParentId)
         {
             using (var conn = CreateConnection())
             using (var comm = conn.CreateCommand())
             {
                 conn.Open();
                 comm.CommandType = CommandType.Text;
-                comm.CommandText = _queryWriter.GetNodesQuery(Id);
+                comm.CommandText = _queryWriter.GetNodesQuery(ParentId);
                 UpdateList(comm);
             }
 
@@ -59,7 +59,8 @@ namespace MechanicalComponents.Models
                     Id = (int)reader["Id"],
                     Name = (string)reader["Name"],
                     SerialCode = (string)reader["SerialCode"],
-                    ParentId = (int?)reader["ParentId"]
+                    //ParentId = (int?)reader["ParentId"]
+                    //IconId 
                 };
                 _nodes.Add(node);
             }

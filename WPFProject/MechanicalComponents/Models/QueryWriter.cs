@@ -10,8 +10,17 @@ namespace MechanicalComponents.Models
     {
         public string GetNodesQuery(int? Id)
         {
-            return $"select * from Nodes " +
-                $"where Id = {Id} ";
+            switch(Id)
+            {
+                case null:
+                    return $"select * from Nodes " +
+                        $"where ParentId is NULL ";
+                default:
+                    return $"select * from Nodes " +
+                    $"where Id = {Id} ";
+            }
+
+            
         }
 
         public string SetNodeQuery(Node node)

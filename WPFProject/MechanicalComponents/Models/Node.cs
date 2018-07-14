@@ -15,10 +15,10 @@ namespace MechanicalComponents.Models
         //}
 
         internal int Id { get; set; }
-        internal string Name { get; set; }
-        internal string SerialCode { get; set; }
+        public string Name { get; set; }
+        public string SerialCode { get; set; }
         internal int? ParentId { get; set; }
-        internal int IconId { get; set; }
+        internal int? IconId { get; set; }
 
 
         //internal string Query { get; set; }
