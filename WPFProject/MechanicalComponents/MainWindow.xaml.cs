@@ -74,5 +74,25 @@ namespace MechanicalComponents
 
             return engines;
         }
+
+        private void AddEngine_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        
+        private void AlterProperties_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void AddNewChild_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

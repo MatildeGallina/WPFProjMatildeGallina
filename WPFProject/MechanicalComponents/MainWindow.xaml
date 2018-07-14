@@ -6,27 +6,99 @@
         xmlns:local="clr-namespace:MechanicalComponents"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Padding" Value="20,5"/>
+        </Style>
+        <Style TargetType="Grid">
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+        <Style TargetType="StackPanel">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Orientation" Value="Horizontal"/>
+        </Style>
+        <Style TargetType="TreeView">
+            <Setter Property="Margin" Value="10" />
+        </Style>
+    </Window.Resources>
+
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <TreeView Name="EnginesTreeView"
-                  Grid.Row="0" Grid.Column="0">
-            <TreeView.Resources>
-                <HierarchicalDataTemplate
-                    DataType="{x:Type local:MainWindow}"
-                    ItemsSource="{Binding Components}">
-                    <StackPanel Orientation="Horizontal"
-                                Margin="10">
-                        <TextBlock Text="{Binding Name}" />
+        <StackPanel Grid.Column="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0">
+                    <TreeView Name="EnginesTreeView">
+                        <TreeView.Resources>
+                            <HierarchicalDataTemplate
+                                DataType="{x:Type local:MainWindow}"
+                                ItemsSource="{Binding Components}">
+                                <StackPanel Orientation="Horizontal"
+                                    Margin="10">
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
+                        </TreeView.Resources>
+                    </TreeView>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom">
+                    <Button Name="Refresh" Content="Refresh" Click="Refresh_Click"/>
+                    <Button Name="AddEngine" Content="New Engine" Click="AddEngine_Click"/>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right">
+            <StackPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <StackPanel>
+                            <Label Content="Name:"/>
+                            <TextBlock Name="NodeName"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <Label Content="SerialCode:"/>
+                            <TextBlock Name="NodeSerialCode"/>
+                        </StackPanel>
                     </StackPanel>
-                </HierarchicalDataTemplate>
-            </TreeView.Resources>
-        </TreeView>
+                    <Button Grid.Row="1" HorizontalAlignment="Right"
+                            Name="AddNewChild" Content="Add child" Click="AddNewChild_Click"/>
+                </Grid>
+            </StackPanel>
+            <StackPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <StackPanel>
+                            <Label Content="Price:"/>
+                            <TextBlock Name="NodePrice"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <Label Content="Material:"/>
+                            <TextBlock Name="NodeMaterial"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <Button Grid.Row="1" HorizontalAlignment="Right"
+                            Name="AlterProperties" Content="Alter properties" Click="AlterProperties_Click"/>
+                </Grid>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>
