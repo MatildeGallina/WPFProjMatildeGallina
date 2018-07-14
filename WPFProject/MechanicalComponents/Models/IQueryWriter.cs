@@ -6,13 +6,9 @@ using System.Threading.Tasks;
 
 namespace MechanicalComponents.Models
 {
-    public interface IQueryWriter
+    interface IQueryFactory
     {
-        string RetriveDataQuery(Node n);
-        string FindChildrenComponentsQuery(Node n);
-        string AddChildComponentsQuery(Node n, string childName, string childSerialCode);
-        string RetriveProperiesQuery(Node n);
-        string AddPropertiesQuery(Node n);
-        string ChangePropertiesQuery(Node n);
+        string GetNodesQuery(int? Id);
+        string SetNodeQuery(Node n);
     }
 }

@@ -10,73 +10,40 @@ namespace MechanicalComponents.Models
 {
     public class Database : IDatabase
     {
-        public Database(string connenctionString)
+        public void SetConnectionString(string connectionString)
         {
-            _connenctionString = connenctionString;
+            _connectionString = connectionString;
         }
+        private string _connectionString { get; set; }
 
-        private string _connenctionString { get; set; }
-
+        private List<Node> _nodes;
 
         public SqlConnection CreateConnection()
         {
-            var conn = new SqlConnection(_connenctionString);
-            conn.Open();
-
-            return conn;
+            return new SqlConnection(_connectionString);
         }
-        
-        public void RetriveData(SqlConnection sc, Node n)
+
+        public List<Node> GetNodes()
         {
-            SqlCommand comm = sc.CreateCommand();
-
-            comm.CommandType = CommandType.Text;
-            comm.CommandText = n.QueryWriter.RetriveDataQuery(n);
-
-            SqlDataReader reader = comm.ExecuteReader();
-            n.DataReader.ReadNodeData(reader);
-
+            throw new NotImplementedException();
         }
 
-        public void FindChildren(SqlConnection sc, Node n)
+        public Node GetInformations()
         {
-            SqlCommand comm = sc.CreateCommand();
-
-            comm.CommandType = CommandType.Text;
-            comm.CommandText = n.QueryWriter.FindChildrenComponentsQuery(n);
-
-            SqlDataReader reader = comm.ExecuteReader();
-            n.DataReader.ReadListOfChild(reader);
+            throw new NotImplementedException();
         }
 
-        public void AddChild(SqlConnection sc, Node n, string name, string serialcode)
+        public void SetNode()
         {
-            SqlCommand comm = sc.CreateCommand();
-
-            comm.CommandType = CommandType.Text;
-            comm.CommandText = n.QueryWriter.AddChildComponentsQuery(n, name, serialcode);
-
-            SqlDataReader reader = comm.ExecuteReader();
+            throw new NotImplementedException();
         }
 
-        public void AddProrperties(SqlConnection sc, Node n)
+        private  Database() { }
+
+        static Database()
         {
-            SqlCommand comm = sc.CreateCommand();
-
-            comm.CommandType = CommandType.Text;
-            comm.CommandText = n.QueryWriter.AddPropertiesQuery(n);
-
-            SqlDataReader reader = comm.ExecuteReader();
+            Instance = new Database();
         }
-
-        public void ChangeProrperties(SqlConnection sc, Node n)
-        {
-            SqlCommand comm = sc.CreateCommand();
-
-            comm.CommandType = CommandType.Text;
-            comm.CommandText = n.QueryWriter.ChangePropertiesQuery(n);
-
-            SqlDataReader reader = comm.ExecuteReader();
-        }
+        private static Database Instance { get; }
     }
 }
