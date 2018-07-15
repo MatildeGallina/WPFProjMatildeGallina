@@ -9,6 +9,6 @@ namespace MechanicalComponents.Models
         SqlConnection CreateConnection();
 
         List<Node> GetNodes(int? Id);
-        void SetNode(Node node);
+        void SetNode(NodeModel node);
     }
 }

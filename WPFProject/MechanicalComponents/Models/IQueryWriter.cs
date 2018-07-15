@@ -9,6 +9,6 @@ namespace MechanicalComponents.Models
     public interface IQueryWriter
     {
         string GetNodesQuery(int? Id);
-        string SetNodeQuery(Node n);
+        string SetNodeQuery(NodeModel n);
     }
 }

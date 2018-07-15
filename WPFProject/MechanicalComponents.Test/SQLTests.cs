@@ -10,50 +10,77 @@ namespace MechanicalComponents.Test
     public class SQLTests
     {
         [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void create_and_open_Connection_succesfully()
         {
-            var dbConn = new Database("");
-            var conn = dbConn.CreateConnection();
-
-            Assert.AreEqual(conn.State, ConnectionState.Open);
+            var mockDB = new MockDatabase();
+            mockDB.connectionOpen = false;
+            mockDB.SetConnectionString("correctString");
+            SqlConnection conn = mockDB.CreateConnection();
+            
+            
+            Assert.AreEqual(true, mockDB.connectionOpen);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [ExpectedException(typeof(Exception))]
         public void Connection_string_wrong_throw_Exception()
         {
-            var dbConn = new Database("");
-            var conn = dbConn.CreateConnection();
+            var mockDB = new MockDatabase();
+            mockDB.connectionOpen = false;
+            mockDB.SetConnectionString("a wrong connection string");
+            SqlConnection conn = mockDB.CreateConnection();
         }
 
         [TestMethod]
-        public void query_of_Insert_count_of_row_in_table_update()
+        public void SetNode_update_list_of_mockdatabase_Count()
         {
-            throw new Exception();
+            var mockDB = new MockDatabase();
+
+            int count = mockDB._models.Count;
+
+            NodeModel node = new NodeModel("SetNode test Method", "A12354678B", 1);
+            mockDB.SetNode(node);
+
+            Assert.AreEqual(count + 1, mockDB._models.Count);
         }
 
         [TestMethod]
         public void checking_the_Insert_values()
         {
-            throw new Exception();
+            var mockDB = new MockDatabase();
+
+            NodeModel node = new NodeModel("SetNode 2 test Method", "B12354678D", 1);
+            mockDB.SetNode(node);
+
+            int count = mockDB._models.Count;
+
+            Assert.AreEqual("SetNode 2 test Method", mockDB._models[count - 1].Name);
+            Assert.AreEqual("B12354678D", mockDB._models[count - 1].SerialCode);
+            Assert.AreEqual(1, mockDB._models[count - 1].ParentId);
         }
 
         [TestMethod]
-        public void query_of_Select_return_the_correct_Id()
+        public void GetNodes_list_has_correct_Count()
         {
-            var dbConn = new Database("");
-            var conn = dbConn.CreateConnection();
+            var mockDB = new MockDatabase();
+            var engines = mockDB.GetNodes(null);
 
-            //Node n = new Node("29CV 2 cilindri", "1020304050");
-
-            //string dbConn.NewQuery(conn, n) = n.QueryWriter.RetriveDataQuery(n);
-
+            Assert.AreEqual(2, engines.Count);
         }
 
         [TestMethod]
-        public void query_of_Update_update_values()
+        public void LazyInitialization_children_list()
         {
-            throw new Exception();
+            var mockDB = new MockDatabase();
+            var engines = mockDB.GetNodes(null);
+
+            Assert.AreEqual(false, engines[0].LazyInitializationTest());
+
+            var children = engines[0].Children;
+
+            Assert.AreEqual(true, engines[0].LazyInitializationTest());
+            Assert.AreEqual(2, children.Count);
         }
 
         [TestMethod]

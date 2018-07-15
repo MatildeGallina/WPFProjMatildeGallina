@@ -17,15 +17,16 @@ namespace MechanicalComponents.Models
         
         public SqlConnection CreateConnection()
         {
-            return new SqlConnection(_connectionString);
+            SqlConnection conn = new SqlConnection(_connectionString);
+            conn.Open();
+            return conn;
         }
 
         public List<Node> GetNodes(int? ParentId)
         {
-            using (var conn = CreateConnection())
+            using (var conn = this.CreateConnection())
             using (var comm = conn.CreateCommand())
             {
-                conn.Open();
                 comm.CommandType = CommandType.Text;
                 comm.CommandText = _queryWriter.GetNodesQuery(ParentId);
                 UpdateList(comm);
@@ -34,12 +35,11 @@ namespace MechanicalComponents.Models
             return _nodes;
         }
         
-        public void SetNode(Node node)
+        public void SetNode(NodeModel node)
         {
-            using (var conn = CreateConnection())
-            using(var comm = conn.CreateCommand())
+            using (var conn = this.CreateConnection())
+            using(var comm = this.CreateConnection().CreateCommand())
             {
-                conn.Open();
                 comm.CommandType = CommandType.Text;
                 comm.CommandText = _queryWriter.SetNodeQuery(node);
 
@@ -54,7 +54,7 @@ namespace MechanicalComponents.Models
 
             while (reader.Read())
             {
-                Node node = new Node
+                Node node = new Node(this)
                 {
                     Id = (int)reader["Id"],
                     Name = (string)reader["Name"],

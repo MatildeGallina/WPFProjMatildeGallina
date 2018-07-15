@@ -20,19 +20,32 @@ namespace MechanicalComponents
 {
     public partial class MainWindow : Window
     {
+        //private IDatabase _database { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
 
             var db = new Database();
-            db.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MechanicalComponentsDatabase;Integrated Security=True;Connect Timeout=15;");
-            db.CreateConnection();
-
+            db.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MechanicalComponentsDatabase;Integrated Security=True;Connect Timeout=30;");
+            SqlConnection conn = db.CreateConnection();
+            
             var engines = db.GetNodes(null);
             EnginesTreeView.ItemsSource = engines;
         }
 
+        //public MainWindow(IDatabase database)
+        //{
+        //    _database = database;
+        //}
+
         private void AddEngine_Click(object sender, RoutedEventArgs e)
+        {
+            NewEngine newEngine = new NewEngine();
+            newEngine.ShowDialog();
+        }
+
+        private void EnginesTreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
         }
@@ -48,11 +61,6 @@ namespace MechanicalComponents
         }
 
         private void AddNewChild_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void EnginesTreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
         }

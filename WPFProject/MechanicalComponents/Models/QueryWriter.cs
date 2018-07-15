@@ -8,22 +8,22 @@ namespace MechanicalComponents.Models
 {
     class QueryWriter : IQueryWriter
     {
-        public string GetNodesQuery(int? Id)
+        public string GetNodesQuery(int? ParentId)
         {
-            switch(Id)
+            switch(ParentId)
             {
                 case null:
                     return $"select * from Nodes " +
                         $"where ParentId is NULL ";
                 default:
                     return $"select * from Nodes " +
-                    $"where Id = {Id} ";
+                    $"where ParentId = {ParentId} ";
             }
 
             
         }
 
-        public string SetNodeQuery(Node node)
+        public string SetNodeQuery(NodeModel node)
         {
             return $"insert into Nodes " +
                 $"(Name, SerialCode, ParentId) " +
