@@ -42,7 +42,7 @@ namespace MechanicalComponents
 
         private void SaveChild_Click(object sender, RoutedEventArgs e)
         {
-            NodeModel child = new NodeModel(ChildName.ToString(), ChildSerialCode.ToString(), /*id del engine*/)
+            NodeModel child = new NodeModel(ChildName.ToString(), ChildSerialCode.ToString()/*, id del engine*/);
         }
 
         private void PreSaveChild_Click(object sender, RoutedEventArgs e)

@@ -20,34 +20,43 @@ namespace MechanicalComponents
 {
     public partial class MainWindow : Window
     {
-        //private IDatabase _database { get; set; }
-
         public MainWindow()
         {
             InitializeComponent();
 
             var db = new Database();
-            db.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MechanicalComponentsDatabase;Integrated Security=True;Connect Timeout=30;");
+            db.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MechanicalComponentsDatabase;");
             SqlConnection conn = db.CreateConnection();
-            
+
+            InitializeTreeview(db);            
+        }
+
+        public void InitializeTreeview(Database db)
+        {
             var engines = db.GetNodes(null);
             EnginesTreeView.ItemsSource = engines;
         }
 
-        //public MainWindow(IDatabase database)
-        //{
-        //    _database = database;
-        //}
-
-        private void AddEngine_Click(object sender, RoutedEventArgs e)
+        private void EnginesTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            NewEngine newEngine = new NewEngine();
-            newEngine.ShowDialog();
+            BasicInformations.Visibility = Visibility.Visible;
+            Node thisNode = (Node)EnginesTreeView.SelectedItem;
+            NodeName.Text = thisNode.Name;
+            NodeSerialCode.Text = thisNode.SerialCode;
+
+            AddNewChild.Visibility = Visibility.Visible;
         }
 
         private void EnginesTreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            Window window = new Window();
+            window.Show();
+        }
+        
+        private void AddEngine_Click(object sender, RoutedEventArgs e)
+        {
+            NewEngine newEngine = new NewEngine();
+            newEngine.ShowDialog();
         }
 
         private void AlterProperties_Click(object sender, RoutedEventArgs e)

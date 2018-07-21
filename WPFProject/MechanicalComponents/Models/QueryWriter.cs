@@ -19,8 +19,6 @@ namespace MechanicalComponents.Models
                     return $"select * from Nodes " +
                     $"where ParentId = {ParentId} ";
             }
-
-            
         }
 
         public string SetNodeQuery(NodeModel node)

@@ -37,14 +37,16 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0">
-                    <TreeView Name="EnginesTreeView" MouseDoubleClick="EnginesTreeView_MouseDoubleClick">
+                    <TreeView Name="EnginesTreeView"
+                              SelectedItemChanged="EnginesTreeView_SelectedItemChanged"
+                              MouseDoubleClick="EnginesTreeView_MouseDoubleClick">
                         <TreeView.Resources>
                             <HierarchicalDataTemplate
                                 DataType="{x:Type local:Node}"
                                 ItemsSource="{Binding engines}">
                                 <StackPanel Orientation="Horizontal"
                                     Margin="10">
-                                    <TextBlock Text="{Binding Name}" />
+                                    <TextBlock Text="{Binding Name}" Name="ItemName"/>
                                 </StackPanel>
                             </HierarchicalDataTemplate>
                         </TreeView.Resources>
@@ -74,8 +76,10 @@
                             <TextBlock Name="NodeSerialCode"/>
                         </StackPanel>
                     </StackPanel>
-                    <Button Grid.Row="1" HorizontalAlignment="Right"
-                            Name="AddNewChild" Content="Add child" Click="AddNewChild_Click"/>
+                    <Button Grid.Row="1"
+                            HorizontalAlignment="Right" Visibility="Hidden"
+                            Name="AddNewChild" Content="Add child"
+                            Click="AddNewChild_Click"/>
                 </Grid>
             </StackPanel>
             <StackPanel Name="Properties" Visibility="Hidden">

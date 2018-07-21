@@ -10,83 +10,87 @@ namespace MechanicalComponents.Test
     public class SQLTests
     {
         [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void create_and_open_Connection_succesfully()
+        public void GetNode_with_rigth_connection_string()
         {
-            var mockDB = new MockDatabase();
-            mockDB.connectionOpen = false;
-            mockDB.SetConnectionString("correctString");
-            SqlConnection conn = mockDB.CreateConnection();
-            
-            
-            Assert.AreEqual(true, mockDB.connectionOpen);
+            Database database = new Database();
+            database.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MockMechanicalComponentsDatabase;");
+            database.GetNodes(1);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
-        public void Connection_string_wrong_throw_Exception()
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetNode_with_null_connection_string()
         {
-            var mockDB = new MockDatabase();
-            mockDB.connectionOpen = false;
-            mockDB.SetConnectionString("a wrong connection string");
-            SqlConnection conn = mockDB.CreateConnection();
+            Database database = new Database();
+            database.SetConnectionString(null);
+            database.GetNodes(1);
         }
 
         [TestMethod]
-        public void SetNode_update_list_of_mockdatabase_Count()
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetNode_with_empty_connection_string()
         {
-            var mockDB = new MockDatabase();
-
-            int count = mockDB._models.Count;
-
-            NodeModel node = new NodeModel("SetNode test Method", "A12354678B", 1);
-            mockDB.SetNode(node);
-
-            Assert.AreEqual(count + 1, mockDB._models.Count);
+            Database database = new Database();
+            database.SetConnectionString("");
+            database.GetNodes(1);
         }
 
         [TestMethod]
-        public void checking_the_Insert_values()
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetNode_with_blanks_connection_string()
         {
-            var mockDB = new MockDatabase();
-
-            NodeModel node = new NodeModel("SetNode 2 test Method", "B12354678D", 1);
-            mockDB.SetNode(node);
-
-            int count = mockDB._models.Count;
-
-            Assert.AreEqual("SetNode 2 test Method", mockDB._models[count - 1].Name);
-            Assert.AreEqual("B12354678D", mockDB._models[count - 1].SerialCode);
-            Assert.AreEqual(1, mockDB._models[count - 1].ParentId);
+            Database database = new Database();
+            database.SetConnectionString("   ");
+            database.GetNodes(1);
         }
 
         [TestMethod]
-        public void GetNodes_list_has_correct_Count()
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetNode_with_wrong_connection_string()
         {
-            var mockDB = new MockDatabase();
-            var engines = mockDB.GetNodes(null);
-
-            Assert.AreEqual(2, engines.Count);
+            Database database = new Database();
+            database.SetConnectionString("wrong/connection/string");
+            database.GetNodes(1);
         }
 
         [TestMethod]
-        public void LazyInitialization_children_list()
+        public void GetNodes_update_database_list()
         {
-            var mockDB = new MockDatabase();
-            var engines = mockDB.GetNodes(null);
+            Database database = new Database();
+            database.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MockMechanicalComponentsDatabase;");
+            database.GetNodes(null);
 
-            Assert.AreEqual(false, engines[0].LazyInitializationTest());
-
-            var children = engines[0].Children;
-
-            Assert.AreEqual(true, engines[0].LazyInitializationTest());
-            Assert.AreEqual(2, children.Count);
+            Assert.AreEqual(3, database._nodes);
         }
 
         [TestMethod]
-        public void query_of_Alter_changes_values()
+        public void GetNodes_charge_rigth_values()
         {
-            throw new Exception();
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void SetNode_update_table_Count()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void SetNode_insert_values_in_correct_columns()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void LazyInitialization_children_list() // non è proprio un test della classe Database ma della classe Node
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void query_of_Alter_changes_values() // cambiare il nome !!!!!!!!!
+        {
+            throw new NotImplementedException();
         }
     }
 }
