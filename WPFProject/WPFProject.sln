@@ -7,10 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MechanicalComponents", "Mec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MechanicalComponents.Test", "MechanicalComponents.Test\MechanicalComponents.Test.csproj", "{886D4B77-07E1-4B9D-9689-5D1BDB7B676F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL Queries", "SQL Queries", "{7C8B501C-3678-4D4C-BBA6-F70C8A612249}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Icons", "Icons", "{342B6955-B3C2-4CCC-9F4E-DDFC75606647}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

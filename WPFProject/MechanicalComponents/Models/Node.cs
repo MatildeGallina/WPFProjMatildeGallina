@@ -57,7 +57,7 @@ namespace MechanicalComponents.Models
         public MultiChildrenNode (IDatabase database)
             : base(database)
         {
-            Icon = "MultiChildrenIcon";
+            Icon = "MultiChildrenIcon.jpg";
         }
         public new readonly string Icon;
 
@@ -72,7 +72,7 @@ namespace MechanicalComponents.Models
         public SingleChildrenNode (IDatabase database)
             : base(database)
         {
-            Icon = "SingleChildrenIcon";
+            Icon = "SingleChildrenIcon.jpg";
         }
         public new readonly string Icon;
 
@@ -90,7 +90,7 @@ namespace MechanicalComponents.Models
         public NullChildrenNode (IDatabase database)
             : base(database)
         {
-            Icon = "NullChildrenIcon";
+            Icon = "NullChildrenIcon.jpg";
         }
         public new readonly string Icon;
 

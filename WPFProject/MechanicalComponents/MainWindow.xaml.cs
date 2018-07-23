@@ -24,11 +24,15 @@ namespace MechanicalComponents
         {
             InitializeComponent();
 
-            var db = new Database();
-            db.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MechanicalComponentsDatabase;");
-            SqlConnection conn = db.CreateConnection();
-
+            var db = ConnectionToDatabase();
             InitializeTreeview(db);            
+        }
+
+        public Database ConnectionToDatabase()
+        {
+            Database database = new Database();
+            database.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MockMechanicalComponentsDatabase;");
+            return database;
         }
 
         public void InitializeTreeview(Database db)
@@ -40,17 +44,17 @@ namespace MechanicalComponents
         private void EnginesTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             BasicInformations.Visibility = Visibility.Visible;
-            Node thisNode = (Node)EnginesTreeView.SelectedItem;
+            INode thisNode = (INode)EnginesTreeView.SelectedItem;
             NodeName.Text = thisNode.Name;
             NodeSerialCode.Text = thisNode.SerialCode;
 
-            AddNewChild.Visibility = Visibility.Visible;
+            if(thisNode.CanHaveChild())
+                AddNewChild.Visibility = Visibility.Visible;
         }
 
         private void EnginesTreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Window window = new Window();
-            window.Show();
+            INode thisNode = (INode)EnginesTreeView.SelectedItem;
         }
         
         private void AddEngine_Click(object sender, RoutedEventArgs e)

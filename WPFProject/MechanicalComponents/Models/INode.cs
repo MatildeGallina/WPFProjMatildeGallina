@@ -13,5 +13,7 @@ namespace MechanicalComponents.Models
         string SerialCode { get; set; }
         int? ParentId { get; set; }
         string Icon { get; set; }
+
+        bool CanHaveChild();
     }
 }
