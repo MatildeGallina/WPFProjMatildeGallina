@@ -8,7 +8,9 @@ namespace MechanicalComponents.Models
         void SetConnectionString(string connectionString);
         SqlConnection CreateConnection();
 
-        List<Node> GetNodes(int? Id);
-        void SetNode(NodeModel node);
+        List<INode> GetNodes(int? Id);
+        INode GetNodeById(int Id);
+        void SetNode(NodeModel node, int? ParentId);
+        void DeleteNode(int Id);
     }
 }

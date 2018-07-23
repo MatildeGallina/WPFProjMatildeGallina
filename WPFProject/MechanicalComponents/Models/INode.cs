@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace MechanicalComponents.Models
 {
-    interface INode
+    public interface INode
     {
+        int Id { get; set; }
+        string Name { get; set; }
+        string SerialCode { get; set; }
+        int? ParentId { get; set; }
+        string Icon { get; set; }
     }
 }

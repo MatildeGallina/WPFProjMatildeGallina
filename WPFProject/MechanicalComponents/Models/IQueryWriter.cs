@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace MechanicalComponents.Models
 {
-    public interface IQueryWriter
+    public interface INodeQueryWriter
     {
-        string GetNodesQuery(int? Id);
-        string SetNodeQuery(NodeModel n);
+        string GetByParentId(int? ParentId);
+        string GetById(int Id);
+        string SetNode(NodeModel n, int? ParentId);
+        string DeleteById(int Id);
     }
 }

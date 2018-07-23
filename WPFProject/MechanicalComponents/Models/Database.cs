@@ -84,8 +84,8 @@ namespace MechanicalComponents.Models
 
     public class Database : IDatabase
     {
-        public List<Node> _nodes { get; set; }
-        private QueryWriter _queryWriter { get; set; }
+        //internal List<Node> _nodes { get; set; }
+        private NodeQueryWriter _queryWriter { get; set; }
 
         public void SetConnectionString(string connectionString)
         {
@@ -101,8 +101,7 @@ namespace MechanicalComponents.Models
         #region Singleton
         public Database()
         {
-            _nodes = new List<Node>();
-            _queryWriter = new QueryWriter();
+            _queryWriter = new NodeQueryWriter();
         }
 
         static Database()
@@ -113,8 +112,9 @@ namespace MechanicalComponents.Models
         public static Database Instance { get; }
         #endregion
 
-        public List<Node> GetNodes(int? Id)
+        public List<INode> GetNodes(int? Id)
         {
+            var nodes = new List<INode>();
             try
             {
                 using (var conn = this.CreateConnection())
@@ -123,12 +123,12 @@ namespace MechanicalComponents.Models
                     conn.Open();
 
                     comm.CommandType = CommandType.Text;
-                    comm.CommandText = _queryWriter.GetNodesQuery(Id);
-                    UpdateList(comm);
+                    comm.CommandText = _queryWriter.GetByParentId(Id);
+                    UpdateList(comm, nodes);
 
                     conn.Dispose();
                 }
-                return _nodes;
+                return nodes;
             }
             catch(Exception)
             {
@@ -137,7 +137,7 @@ namespace MechanicalComponents.Models
             }
         }
 
-        public void SetNode(NodeModel node)
+        public INode GetNodeById(int Id)
         {
             try
             {
@@ -147,7 +147,58 @@ namespace MechanicalComponents.Models
                     conn.Open();
 
                     comm.CommandType = CommandType.Text;
-                    comm.CommandText = _queryWriter.SetNodeQuery(node);
+                    comm.CommandText = _queryWriter.GetById(Id);
+
+                    var reader = comm.ExecuteReader();
+                    reader.Read();
+                    var node = AddValuesToNode(reader);
+
+                    conn.Dispose();
+                    return node;
+                }
+            }
+            catch (Exception)
+            {
+                // connessione non riuscita per quanlche motivo
+                throw new ArgumentException("Connection failed");
+            }
+}
+
+        public void SetNode(NodeModel node, int? ParentId)
+        {
+            try
+            {
+                using (var conn = this.CreateConnection())
+                using (var comm = conn.CreateCommand())
+                {
+                    conn.Open();
+
+                    comm.CommandType = CommandType.Text;
+                    comm.CommandText = _queryWriter.SetNode(node, ParentId);
+
+                    node.Id = (int)comm.ExecuteScalar();
+
+                    conn.Dispose();
+                }
+            }
+            catch
+            {
+                // connessione non riuscita per quanlche motivo
+                throw new ArgumentException("Connection failed");
+            }
+        }
+        
+        public void DeleteNode(int Id)
+        {
+            try
+            {
+                using (var conn = this.CreateConnection())
+                using (var comm = conn.CreateCommand())
+                {
+                    conn.Open();
+
+                    comm.CommandType = CommandType.Text;
+                    comm.CommandText = _queryWriter.DeleteById(Id);
 
                     comm.ExecuteNonQuery();
 
@@ -161,25 +212,31 @@ namespace MechanicalComponents.Models
             }
         }
 
-        private static void UpdateList(SqlCommand comm)
+        private static void UpdateList(SqlCommand comm, List<INode> nodes)
         {
             using (var reader = comm.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    Node node = CreateNode(reader);
-                    node.Id = (int)reader["Id"];
-                    node.Name = (string)reader["Name"];
-                    node.SerialCode = (string)reader["SerialCode"];
+                    INode node = AddValuesToNode(reader);
 
-                    Instance._nodes.Add(node);
+                    nodes.Add(node);
                 }
             }
         }
 
-        private static Node CreateNode(SqlDataReader reader)
+        private static INode AddValuesToNode(SqlDataReader reader)
         {
-            switch (reader["Type"])
+            var node = CreateNode(reader);
+            node.Id = (int)reader["Id"];
+            node.Name = (string)reader["Name"];
+            node.SerialCode = (string)reader["SerialCode"];
+            return node;
+        }
+
+        private static INode CreateNode(SqlDataReader reader)
+        {
+            switch ((string)reader["Type"])
             {
                 case "MultiChildrenNode":
                     return new MultiChildrenNode(Instance);

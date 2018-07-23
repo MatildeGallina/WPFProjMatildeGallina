@@ -7,7 +7,7 @@ using System.Data;
 namespace MechanicalComponents.Test
 {
     [TestClass]
-    public class SQLTests
+    public class DatabaseTests
     {
         [TestMethod]
         public void GetNode_with_rigth_connection_string()
@@ -58,39 +58,38 @@ namespace MechanicalComponents.Test
         {
             Database database = new Database();
             database.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MockMechanicalComponentsDatabase;");
-            database.GetNodes(null);
+            var engines = database.GetNodes(null);
 
-            Assert.AreEqual(3, database._nodes);
+            Assert.AreEqual(3, engines.Count);
         }
 
         [TestMethod]
         public void GetNodes_charge_rigth_values()
         {
-            throw new NotImplementedException();
-        }
+            Database database = new Database();
+            database.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MockMechanicalComponentsDatabase;");
+            var engines = database.GetNodes(null);
 
-        [TestMethod]
-        public void SetNode_update_table_Count()
-        {
-            throw new NotImplementedException();
+            Assert.AreEqual(1, engines[0].Id);
+            Assert.AreEqual("29CV 2 cilindri", engines[0].Name);
+            Assert.AreEqual("1020304056", engines[0].SerialCode);
+            Assert.AreEqual(null, engines[0].ParentId);
         }
 
         [TestMethod]
         public void SetNode_insert_values_in_correct_columns()
         {
-            throw new NotImplementedException();
-        }
+            var mockNode = new NodeModel("mockNode", "00001111AB", "SingleChildrenNode");
 
-        [TestMethod]
-        public void LazyInitialization_children_list() // non è proprio un test della classe Database ma della classe Node
-        {
-            throw new NotImplementedException();
-        }
+            Database database = new Database();
+            database.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MockMechanicalComponentsDatabase;");
+            database.SetNode(mockNode, null);
 
-        [TestMethod]
-        public void query_of_Alter_changes_values() // cambiare il nome !!!!!!!!!
-        {
-            throw new NotImplementedException();
+            var node = database.GetNodeById(mockNode.Id);
+            Assert.AreEqual("mockNode", node.Name);
+            Assert.AreEqual("00001111AB", node.SerialCode);
+
+            database.DeleteNode(mockNode.Id);
         }
     }
 }

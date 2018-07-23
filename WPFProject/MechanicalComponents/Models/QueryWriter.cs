@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MechanicalComponents.Models
 {
-    class QueryWriter : IQueryWriter
+    class NodeQueryWriter : INodeQueryWriter
     {
-        public string GetNodesQuery(int? ParentId)
+        public string GetByParentId(int? ParentId)
         {
             switch(ParentId)
             {
@@ -21,13 +21,36 @@ namespace MechanicalComponents.Models
             }
         }
 
-        public string SetNodeQuery(NodeModel node)
+        public string GetById(int Id)
         {
+            return "select * from Nodes " +
+                $"where Id = {Id}";
+        }
+
+        public string SetNode(NodeModel node, int? ParentId)
+        {
+            string ParentIdValue;
+
+            switch (ParentId)
+            {
+                case null:
+                    ParentIdValue = "NULL";
+                    break;
+                default:
+                    ParentIdValue = ParentId.ToString();
+                    break;
+            }
+
             return $"insert into Nodes " +
-                $"(Name, SerialCode, ParentId) " +
-                //$"OUTPUT Inserted.ID " +
+                $"(Name, SerialCode, ParentId, Type) " +
+                $"OUTPUT Inserted.ID " +
                 $"values " +
-                $"('{node.Name}', '{node.SerialCode}', {node.ParentId}) ";
+                $"('{node.Name}', '{node.SerialCode}', {ParentIdValue}, '{node.Type}') "; /* {node.ParentId},*/
+        }
+
+        public string DeleteById(int Id)
+        {
+            return $"delete from Nodes where Id = {Id}";
         }
     }
 }

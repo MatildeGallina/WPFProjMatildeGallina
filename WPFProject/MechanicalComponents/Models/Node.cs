@@ -11,8 +11,8 @@ namespace MechanicalComponents.Models
     {
         /*protected*/public Node(IDatabase database)
         {
-            _Children = new Lazy<List<Node>>(LoadChildren);
             _database = database;
+            _Children = new Lazy<List<INode>>(LoadChildren);
         }
 
         public int Id { get; set; }
@@ -21,15 +21,18 @@ namespace MechanicalComponents.Models
         public int? ParentId { get; set; }
         public string Icon { get; set; }
 
-        public List<Node> Children
+        public List<INode> Children
         {
             get { return _Children.Value; }
         }
-        private readonly Lazy<List<Node>> _Children;
+        private readonly Lazy<List<INode>> _Children;
         private IDatabase _database;
 
-        private List<Node> LoadChildren()
+        public List<INode> LoadChildren()
         {
+            if (!CanHaveChild())
+                throw new ArgumentException("This node can not have children!");
+
             return _database.GetNodes(this.Id);
         }
 
@@ -38,25 +41,27 @@ namespace MechanicalComponents.Models
             return _Children.IsValueCreated;
         }
 
-        private void AddChild(NodeModel child)
+        public void AddChild(NodeModel child)
         {
-            _database.SetNode(child);
+            if (!CanHaveChild())
+                throw new ArgumentException("This node can not have a new child!");
+
+            _database.SetNode(child, this.Id);
         }
 
-        internal abstract bool CanHaveChild();
+        public abstract bool CanHaveChild();
     }
 
     public class MultiChildrenNode : Node
     {
-        internal MultiChildrenNode (IDatabase database)
+        public MultiChildrenNode (IDatabase database)
             : base(database)
         {
             Icon = "MultiChildrenIcon";
         }
+        public new readonly string Icon;
 
-        public readonly string Icon;
-
-        internal override bool CanHaveChild()
+        public override bool CanHaveChild()
         {
             return true;
         }
@@ -64,15 +69,14 @@ namespace MechanicalComponents.Models
 
     public class SingleChildrenNode : Node
     {
-        internal SingleChildrenNode (IDatabase database)
+        public SingleChildrenNode (IDatabase database)
             : base(database)
         {
             Icon = "SingleChildrenIcon";
         }
+        public new readonly string Icon;
 
-        public readonly string Icon;
-
-        internal override bool CanHaveChild()
+        public override bool CanHaveChild()
         {
             if (Children.Count > 0)
                 return false;
@@ -83,15 +87,14 @@ namespace MechanicalComponents.Models
 
     public class NullChildrenNode : Node
     {
-        internal NullChildrenNode (IDatabase database)
+        public NullChildrenNode (IDatabase database)
             : base(database)
         {
             Icon = "NullChildrenIcon";
         }
+        public new readonly string Icon;
 
-        public readonly string Icon;
-
-        internal override bool CanHaveChild()
+        public override bool CanHaveChild()
         {
             return false;
         }
@@ -99,15 +102,18 @@ namespace MechanicalComponents.Models
     
     public class NodeModel
     {
-        public NodeModel(string name, string serialCode)
+        public NodeModel(string name, string serialCode, string type)
         {
             Name = name;
             SerialCode = serialCode;
+            Type = type;
         }
 
+        public int Id { get; set; }
         internal string Name { get; set; }
         internal string SerialCode { get; set; }
         internal int? ParentId { get; set; }  
+        internal string Type { get; set; }
         // !!
         // dovrebbe avere una proprietà stringa che indica il tipo di nodo (MultiChildrenNode, SingleChildrenNode ...)
         // magari visto che la scelta verrà fatta nella finestra mettere un menu a tendina o un radio buttton con gia un check
