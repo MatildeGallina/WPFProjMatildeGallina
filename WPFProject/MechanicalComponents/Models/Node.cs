@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -26,14 +27,15 @@ namespace MechanicalComponents.Models
             get { return _Children.Value; }
         }
         private readonly Lazy<List<INode>> _Children;
-        private IDatabase _database;
+        internal IDatabase _database;
 
         public List<INode> LoadChildren()
         {
-            if (!CanHaveChild())
-                throw new ArgumentException("This node can not have children!");
+            var list =_database.GetNodes(this.Id);
+            foreach (Node n in list)
+                n._database = this._database;
 
-            return _database.GetNodes(this.Id);
+            return list;
         }
 
         public bool WereChildrenLoaded()
@@ -54,10 +56,10 @@ namespace MechanicalComponents.Models
 
     public class MultiChildrenNode : Node
     {
-        public MultiChildrenNode (IDatabase database)
+        public MultiChildrenNode(IDatabase database)
             : base(database)
         {
-            Icon = "MultiChildrenIcon.jpg";
+            Icon = @"/WPFProject/MechanicalComponents;Icons/MultiChildrenNode.jpg";
         }
         public new readonly string Icon;
 
@@ -78,10 +80,10 @@ namespace MechanicalComponents.Models
 
         public override bool CanHaveChild()
         {
-            if (Children.Count > 0)
+            if (this.Children.Count > 0)
                 return false;
-
-            return true;
+            else
+                return true;
         }
     }
 
@@ -102,11 +104,17 @@ namespace MechanicalComponents.Models
     
     public class NodeModel
     {
+        public NodeModel()
+        {
+            Children = new ObservableCollection<NodeModel>();
+        }
+
         public NodeModel(string name, string serialCode, string type)
         {
             Name = name;
             SerialCode = serialCode;
             Type = type;
+            Children = new ObservableCollection<NodeModel>();
         }
 
         public int Id { get; set; }
@@ -119,7 +127,7 @@ namespace MechanicalComponents.Models
         // magari visto che la scelta verrà fatta nella finestra mettere un menu a tendina o un radio buttton con gia un check
         // che seleziona un tipo
         // !!
-        private List<NodeModel> Children { get; set; }
+        internal ObservableCollection<NodeModel> Children { get; set; }
         // aggiungere un metodo per creare un nuovo NodeModel da aggiungere alla lista di figli
     }
 }

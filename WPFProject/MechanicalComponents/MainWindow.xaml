@@ -28,84 +28,75 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="0">
+        <StackPanel Grid.Column="0" Grid.Row="0">
+            <TreeView Name="EnginesTreeView"
+                      SelectedItemChanged="EnginesTreeView_SelectedItemChanged">
+                <TreeView.Resources>
+                    <HierarchicalDataTemplate
+                                DataType="{x:Type local:Node}"
+                                ItemsSource="{Binding Children}">
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="10">
+                            <Image Height="20"
+                                           Margin="5"
+                                           Source="{Binding Icon}">
+                            </Image>
+                            <TextBlock Text="{Binding Name}" Name="ItemName"
+                                               HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.Resources>
+            </TreeView>
+        </StackPanel>
+        
+        <StackPanel Grid.Column="0" Grid.Row="1"
+                    Orientation="Horizontal" VerticalAlignment="Bottom">
+            <Button Name="Refresh" Content="Refresh"
+                    IsEnabled="False"
+                    Click="Refresh_Click"/>
+            <Button Name="AddEngine" Content="New Engine" Click="AddEngine_Click"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Grid.Row="0"
+                    Name="Informations" Visibility="Hidden"
+                    Orientation="Vertical">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Row="0">
-                    <TreeView Name="EnginesTreeView"
-                              SelectedItemChanged="EnginesTreeView_SelectedItemChanged"
-                              MouseDoubleClick="EnginesTreeView_MouseDoubleClick">
-                        <TreeView.Resources>
-                            <HierarchicalDataTemplate
-                                DataType="{x:Type local:Node}"
-                                ItemsSource="{Binding engines}">
-                                <StackPanel Orientation="Horizontal"
-                                    Margin="10">
-                                    <Image Source="C:\Users\matil\Documents\IRES\WPF-SQLProject\WPFProjMatildeGallina\Icons\MultiChildrenNode.jpg" Height="20"></Image>
-                                    <TextBlock Text="{Binding Name}" Name="ItemName"
-                                               HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
-                                </StackPanel>
-                            </HierarchicalDataTemplate>
-                        </TreeView.Resources>
-                    </TreeView>
+                <StackPanel Grid.Row="0" Grid.Column="0"
+                            Orientation="Vertical">
+                    <Label Content="Name:"/>
+                    <TextBlock Name="NodeName"/>
                 </StackPanel>
-                <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom">
-                    <Button Name="Refresh" Content="Refresh" Click="Refresh_Click"/>
-                    <Button Name="AddEngine" Content="New Engine" Click="AddEngine_Click"/>
+                <StackPanel Grid.Row="0" Grid.Column="1"
+                            Orientation="Vertical">
+                    <Label Content="SerialCode:"/>
+                    <TextBlock Name="NodeSerialCode"/>
                 </StackPanel>
+
             </Grid>
         </StackPanel>
-        <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right">
-            <StackPanel Name="BasicInformations" Visibility="Hidden">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <StackPanel Grid.Row="0"
-                                Orientation="Horizontal">
-                        <StackPanel Orientation="Vertical">
-                            <Label Content="Name:"/>
-                            <TextBlock Name="NodeName"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical">
-                            <Label Content="SerialCode:"/>
-                            <TextBlock Name="NodeSerialCode"/>
-                        </StackPanel>
-                    </StackPanel>
-                    <Button Grid.Row="1"
-                            HorizontalAlignment="Right" Visibility="Hidden"
-                            Name="AddNewChild" Content="Add child"
-                            Click="AddNewChild_Click"/>
-                </Grid>
-            </StackPanel>
-            <StackPanel Name="Properties" Visibility="Hidden">
-                <Grid >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <StackPanel Grid.Row="0" Orientation="Horizontal">
-                        <StackPanel>
-                            <Label Content="Price:"/>
-                            <TextBlock Name="NodePrice"/>
-                        </StackPanel>
-                        <StackPanel>
-                            <Label Content="Material:"/>
-                            <TextBlock Name="NodeMaterial"/>
-                        </StackPanel>
-                    </StackPanel>
-                    <Button Grid.Row="1" HorizontalAlignment="Right"
-                            Name="AlterProperties" Content="Alter properties" Click="AlterProperties_Click"/>
-                </Grid>
-            </StackPanel>
+        
+        <StackPanel Grid.Row="1" Grid.Column="1"
+                    Name="SelectedItemButtons" Visibility="Hidden"
+                    Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Name="AddNewChild" Content="Add child"
+                    IsEnabled="False"
+                    Click="AddNewChild_Click"/>
+            <Button Name="AlterProperties" Content="Set properties"
+                    Click="AlterProperties_Click"/>
         </StackPanel>
     </Grid>
 </Window>

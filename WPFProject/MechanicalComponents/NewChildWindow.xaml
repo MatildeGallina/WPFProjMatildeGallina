@@ -1,0 +1,81 @@
+﻿<Window x:Class="MechanicalComponents.NewChildWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MechanicalComponents"
+        mc:Ignorable="d"
+        Title="NewChildWindow" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="StackPanel">
+            <!--<Setter Property="Orientation" Value="Horizontal"/>-->
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="Padding" Value="20, 5" />
+        </Style>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0"
+                    Background="Red">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+            </Grid>
+
+            <StackPanel Background="Aqua" Grid.Row="0">
+                <Label Content="Name"/>
+                <TextBox Name="NewChildName"/>
+            </StackPanel>
+            <StackPanel Background="Beige" Grid.Row="1">
+                <Label Content="SerialNumber"/>
+                <TextBox Name="NewChildSN"/>
+            </StackPanel>
+            <StackPanel Background="BlueViolet" Grid.Row="2">
+                <!--<CheckBox Name="ChildrenCheck" Content="Children"
+                          Checked="ChildrenCheck_Checked" Unchecked="ChildrenCheck_Unchecked"/>-->
+                <RadioButton GroupName="NodeType" Content="Null children node" Name="Null" IsChecked="True"/>
+                <RadioButton GroupName="NodeType" Content="Single child node" Name="Single"/>
+                <RadioButton GroupName="NodeType" Content="Multi children node" Name="Multi"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!--<StackPanel Grid.Row="1"
+                    Background="Yellow"
+                    Name="ChildrenPanel">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+
+                <ListBox Grid.Column="0" Name="ProvisionalChildrenList">
+
+                </ListBox>
+                <StackPanel Grid.Column="1"
+                            Background="Brown">
+                    <Label></Label>
+                </StackPanel>
+            </Grid>
+        </StackPanel>-->
+
+        <StackPanel Grid.Row="2"
+                    Background="Green"
+                    HorizontalAlignment="Center">
+            <Button Name="Undo" Content="Undo" Click="Undo_Click"/>
+            <Button Name="SaveNewChild" Content="Save" Click="SaveNewChild_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

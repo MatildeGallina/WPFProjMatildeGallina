@@ -57,6 +57,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\IValidator.cs" />
+    <Compile Include="Models\Validator.cs" />
+    <Compile Include="SetPropertiesWindow.xaml.cs">
+      <DependentUpon>SetPropertiesWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -69,7 +74,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="NewEngine.xaml">
+    <Page Include="NewChildWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewEngineWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SetPropertiesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -81,8 +94,11 @@
     <Compile Include="Models\INode.cs" />
     <Compile Include="Models\Node.cs" />
     <Compile Include="Models\QueryWriter.cs" />
-    <Compile Include="NewEngine.xaml.cs">
-      <DependentUpon>NewEngine.xaml</DependentUpon>
+    <Compile Include="NewChildWindow.xaml.cs">
+      <DependentUpon>NewChildWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NewEngineWindow.xaml.cs">
+      <DependentUpon>NewEngineWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -109,6 +125,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\MultiChildrenNode.jpg" />
+    <Resource Include="Icons\NullChildrenNode.jpg" />
+    <Resource Include="Icons\SingleChildrenNode.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -112,29 +112,29 @@ namespace MechanicalComponents.Models
         public static Database Instance { get; }
         #endregion
 
-        public List<INode> GetNodes(int? Id)
+        public List<INode> GetNodes(int? ParentId)
         {
             var nodes = new List<INode>();
-            try
-            {
+            //try
+            //{
                 using (var conn = this.CreateConnection())
                 using (var comm = conn.CreateCommand())
                 {
                     conn.Open();
 
                     comm.CommandType = CommandType.Text;
-                    comm.CommandText = _queryWriter.GetByParentId(Id);
+                    comm.CommandText = _queryWriter.GetByParentId(ParentId);
                     UpdateList(comm, nodes);
 
                     conn.Dispose();
                 }
                 return nodes;
-            }
-            catch(Exception)
-            {
-                // connessione non riuscita per quanlche motivo
-                throw new ArgumentException("Connection failed");
-            }
+            //}
+            //catch(Exception)
+            //{
+            //    // connessione non riuscita per quanlche motivo
+            //    throw new ArgumentException("Connection failed");
+            //}
         }
 
         public INode GetNodeById(int Id)

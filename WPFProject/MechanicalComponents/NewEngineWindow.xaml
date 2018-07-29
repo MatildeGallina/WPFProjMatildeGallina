@@ -1,9 +1,9 @@
-﻿<Window x:Class="MechanicalComponents.NewEngine"
+﻿<Window x:Class="MechanicalComponents.NewEngineWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MechanicalComponents"
+        xmlns:local="clr-namespace:MechanicalComponents.Models"
         mc:Ignorable="d"
         Title="NewEngine" Height="450" Width="500"
         Background="WhiteSmoke">
@@ -40,48 +40,44 @@
                              HorizontalAlignment="Center" Width="200"
                              Background="White"/>
                 </StackPanel>
+                
                 <StackPanel Grid.Row="1">
                     <Label Content="SerialCode"/>
                     <TextBox Name="EngineSerialCode"
                              HorizontalAlignment="Center" Width="200"
                              Background="White"/>
                 </StackPanel>
-                <StackPanel Grid.Row="2" Visibility="Hidden">
-                    <ListBox Name="PreviewChildrenList"/>
-                </StackPanel>
-                <StackPanel Grid.Row="3"
-                            Name="PreviewChild"
-                            Background="WhiteSmoke" Visibility="Hidden"
-                            VerticalAlignment="Bottom">
-                    <StackPanel>
-                        <Label Content="Chil Name"/>
-                        <TextBox Name="ChildName" MinWidth="10"/>
-                    </StackPanel>
-                    <StackPanel>
-                        <Label Content="Child SerialCode"/>
-                        <TextBox Name="ChildSerialCode" MinWidth="10"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Name="PreSaveChild" Content="Save child" IsEnabled="False"
-                                Click="PreSaveChild_Click"/>
-                        <Button Name="UndoChild" Content="Undo"
-                                Click="UndoChild_Click"/>
-                    </StackPanel>
+
+                <StackPanel Grid.Row="2">
+                    <ListBox Name="ChildrenListBox"
+                             Grid.Row="0" Grid.Column="1"
+                             Background="LightGray"
+                             HorizontalContentAlignment="Stretch">
+                        <DataTemplate>
+                            <Border BorderBrush="Gray" BorderThickness="1"
+                                    Margin="10" Padding="10"
+                                    Background="White">
+                                <DockPanel LastChildFill="False">
+                                    <TextBlock DockPanel.Dock="Left" Text="{Binding Name}" />
+                                    <Button Content="Remove" Name="RemoveChild" Click="RemoveChild_Click"/>
+                                </DockPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox>
                 </StackPanel>
             </Grid>
         </StackPanel>
+        
         <StackPanel Grid.Column="1">
-            <StackPanel>
-                <Button Name="AddChild" Content="Add child" IsEnabled="False"
-                        Click="AddChild_Click"
-                        VerticalAlignment="Top"/>
-            </StackPanel>
-            <StackPanel VerticalAlignment="Bottom">
-                <Button Name="Save" Content="Save" IsEnabled="False"
-                        Click="Save_Click"/>
-                <Button Name="Undo" Content="Undo"
-                        Click="Undo_Click"/>
-            </StackPanel>
+            <Button Name="AddChild" Content="Add child"
+                    Click="AddChild_Click"
+                    VerticalAlignment="Top"/>
+            <Button Name="SetProperties" Content="Set Properties"
+                    Click="SetProperties_Click"/>
+            <Button Name="Save" Content="Save"
+                    Click="Save_Click"/>
+            <Button Name="Undo" Content="Undo"
+                    Click="Undo_Click"/>
         </StackPanel>
     </Grid>
 </Window>

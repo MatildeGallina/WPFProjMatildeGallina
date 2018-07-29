@@ -38,44 +38,54 @@ namespace MechanicalComponents
         public void InitializeTreeview(Database db)
         {
             var engines = db.GetNodes(null);
+            foreach(Node n in engines)
+                n._database = db;
+
             EnginesTreeView.ItemsSource = engines;
         }
 
         private void EnginesTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            BasicInformations.Visibility = Visibility.Visible;
-            INode thisNode = (INode)EnginesTreeView.SelectedItem;
-            NodeName.Text = thisNode.Name;
-            NodeSerialCode.Text = thisNode.SerialCode;
+            VisibilitySpecifications();
 
-            if(thisNode.CanHaveChild())
-                AddNewChild.Visibility = Visibility.Visible;
+            INode selectedNode = (INode)EnginesTreeView.SelectedItem;
+
+            NodeName.Text = selectedNode.Name;
+            NodeSerialCode.Text = selectedNode.SerialCode;
         }
 
-        private void EnginesTreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            INode thisNode = (INode)EnginesTreeView.SelectedItem;
-        }
-        
         private void AddEngine_Click(object sender, RoutedEventArgs e)
         {
-            NewEngine newEngine = new NewEngine();
+            NewEngineWindow newEngine = new NewEngineWindow();
             newEngine.ShowDialog();
-        }
-
-        private void AlterProperties_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
-
+            INode selectedNode = (INode)EnginesTreeView.SelectedItem;
+            // come fare il refresh di un ramo del treeview
         }
 
         private void AddNewChild_Click(object sender, RoutedEventArgs e)
         {
+            NewChildWindow newChild = new NewChildWindow();
+            newChild.ShowDialog();
+        }
 
+        private void AlterProperties_Click(object sender, RoutedEventArgs e)
+        {
+            SetPropertiesWindow setProperties = new SetPropertiesWindow();
+            setProperties.ShowDialog();
+        }
+        
+        private void VisibilitySpecifications()
+        {
+            INode selectedNode = (INode)EnginesTreeView.SelectedItem;
+
+            AddNewChild.IsEnabled = selectedNode.CanHaveChild();
+            Refresh.IsEnabled = true;
+            Informations.Visibility = Visibility.Visible;
+            SelectedItemButtons.Visibility = Visibility.Visible;
         }
     }
 }
