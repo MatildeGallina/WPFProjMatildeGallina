@@ -42,7 +42,7 @@ namespace MechanicalComponents.Test
         {
             var scn = new SingleChildrenNode(newDatabase())
             {
-                Id = 5
+                Id = 4
             };
             Assert.AreEqual(true, scn.CanHaveChild());
         }
@@ -53,7 +53,7 @@ namespace MechanicalComponents.Test
         {
             var scn = new SingleChildrenNode(newDatabase())
             {
-                Id = 5
+                Id = 4
             };
 
             var child1 = new NodeModel("child 1", "1234AA1234", "MultiChildrenNode");
@@ -61,6 +61,8 @@ namespace MechanicalComponents.Test
 
             var child2 = new NodeModel("child 2", "5678BB5678", "SingleChildrenNode");
             scn.AddChild(child2);
+
+            // non funziona perchè non aggiungo questi due figli al database e quindi mi torna sempre true
         }
 
         [TestMethod]

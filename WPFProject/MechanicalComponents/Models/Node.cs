@@ -21,11 +21,14 @@ namespace MechanicalComponents.Models
         public string SerialCode { get; set; }
         public int? ParentId { get; set; }
         public string Icon { get; set; }
+        
+        public IProperties properties { get; set; }
 
         public List<INode> Children
         {
             get { return _Children.Value; }
         }
+
         private readonly Lazy<List<INode>> _Children;
         internal IDatabase _database;
 
@@ -60,8 +63,9 @@ namespace MechanicalComponents.Models
             : base(database)
         {
             Icon = @"/WPFProject/MechanicalComponents;Icons/MultiChildrenNode.jpg";
+            properties = new MultiChildrenNodeProperties();
         }
-        public new readonly string Icon;
+        //public new readonly string Icon;
 
         public override bool CanHaveChild()
         {
@@ -75,8 +79,8 @@ namespace MechanicalComponents.Models
             : base(database)
         {
             Icon = "SingleChildrenIcon.jpg";
+            properties = new SingleChildrenNodeProperties();
         }
-        public new readonly string Icon;
 
         public override bool CanHaveChild()
         {
@@ -93,8 +97,8 @@ namespace MechanicalComponents.Models
             : base(database)
         {
             Icon = "NullChildrenIcon.jpg";
+            properties = new NullChildrenNodeProperties();
         }
-        public new readonly string Icon;
 
         public override bool CanHaveChild()
         {
@@ -107,6 +111,7 @@ namespace MechanicalComponents.Models
         public NodeModel()
         {
             Children = new ObservableCollection<NodeModel>();
+            Savable = false;
         }
 
         public NodeModel(string name, string serialCode, string type)
@@ -118,16 +123,13 @@ namespace MechanicalComponents.Models
         }
 
         public int Id { get; set; }
-        internal string Name { get; set; }
+        public string Name { get; set; }
         internal string SerialCode { get; set; }
         internal int? ParentId { get; set; }  
         internal string Type { get; set; }
-        // !!
-        // dovrebbe avere una proprietà stringa che indica il tipo di nodo (MultiChildrenNode, SingleChildrenNode ...)
-        // magari visto che la scelta verrà fatta nella finestra mettere un menu a tendina o un radio buttton con gia un check
-        // che seleziona un tipo
-        // !!
+
+        internal bool Savable { get; set; }
+
         internal ObservableCollection<NodeModel> Children { get; set; }
-        // aggiungere un metodo per creare un nuovo NodeModel da aggiungere alla lista di figli
     }
 }

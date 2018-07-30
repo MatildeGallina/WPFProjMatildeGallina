@@ -17,22 +17,17 @@ using MechanicalComponents.Models;
 
 namespace MechanicalComponents
 {
-    public class User
-    {
-        public string Name { get; set; }
-    }
     public partial class NewEngineWindow : Window
     {
-        private NodeModel _engine { get; set; }
-        private ObservableCollection<User> users = new ObservableCollection<User>();
-
+        internal NodeModel _engine = new NodeModel();
 
         public NewEngineWindow()
         {
             _engine = new NodeModel();
 
             InitializeComponent();
-            ChildrenListBox.ItemsSource = users;
+
+            ChildrenListBox.ItemsSource = _engine.Children;
         }
 
         private void AddChild_Click(object sender, RoutedEventArgs e)
@@ -45,26 +40,50 @@ namespace MechanicalComponents
             _engine.Children.Add(newChild);
         }
 
-        private void RemoveChild_Click(object sender, RoutedEventArgs e)
+        private void Remove_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            var child = (NodeModel)ChildrenListBox.SelectedItem;
+            _engine.Children.Remove(child);
         }
 
         private void SetProperties_Click(object sender, RoutedEventArgs e)
         {
-
+            throw new NotImplementedException();
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
-            // come condividere la connessione al database tra la MainWindow e questa finestra per permettere di
-            // salvare il NodeModel con la stessa stringa di connessione al database
+            var savableEngine = new NodeModel(EngineName.Text, EngineSerialCode.Text, "MultiChildrenNode");
+            var validator = new Validator();
+            var errors = validator.ValidateNode(savableEngine);
+
+            if(errors.Count == 0)
+            {
+                _engine.Name = savableEngine.Name;
+                _engine.SerialCode = savableEngine.SerialCode;
+                _engine.ParentId = null;
+                _engine.Type = savableEngine.Type;
+                _engine.Savable = true;
+
+                Cleaning();
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Invalid name or serialCode value!");
+            }
         }
 
         private void Undo_Click(object sender, RoutedEventArgs e)
         {
+            Cleaning();
             this.Close();
+        }
+
+        private void Cleaning()
+        {
+            EngineName.Clear();
+            EngineSerialCode.Clear();
         }
     }
 }

@@ -29,23 +29,23 @@ namespace MechanicalComponents.Models
 
         public string SetNode(NodeModel node, int? ParentId)
         {
-            string ParentIdValue;
-
             switch (ParentId)
             {
                 case null:
-                    ParentIdValue = "NULL";
-                    break;
+                    return $"insert into Nodes " +
+                        $"(Name, SerialCode, ParentId, Type) " +
+                        $"OUTPUT Inserted.Id " +
+                        $"values " +
+                        $"('{node.Name}', '{node.SerialCode}', NULL, '{node.Type}') ";
                 default:
-                    ParentIdValue = ParentId.ToString();
-                    break;
+                    return $"insert into Nodes " +
+                        $"(Name, SerialCode, ParentId, Type) " +
+                        $"OUTPUT Inserted.ID " +
+                        $"values " +
+                        $"('{node.Name}', '{node.SerialCode}', {ParentId}, '{node.Type}') ";
             }
 
-            return $"insert into Nodes " +
-                $"(Name, SerialCode, ParentId, Type) " +
-                $"OUTPUT Inserted.ID " +
-                $"values " +
-                $"('{node.Name}', '{node.SerialCode}', {ParentIdValue}, '{node.Type}') "; /* {node.ParentId},*/
+            
         }
 
         public string DeleteById(int Id)

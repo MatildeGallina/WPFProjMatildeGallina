@@ -14,6 +14,7 @@ namespace MechanicalComponents.Models
         int? ParentId { get; set; }
         string Icon { get; set; }
         List<INode> Children { get; }
+        IProperties properties { get; set; }
 
         bool CanHaveChild();
     }

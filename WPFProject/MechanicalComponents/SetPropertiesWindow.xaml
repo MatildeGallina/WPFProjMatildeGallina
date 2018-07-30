@@ -7,6 +7,54 @@
         mc:Ignorable="d"
         Title="SetPropertiesWindow1" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+            <StackPanel>
+                <Label Content="Brand"/>
+                <TextBox Name="NodeBrand"/>
+            </StackPanel>
+            <StackPanel>
+                <Label Content="Model"/>
+                <TextBox Name="NodeModel"/>
+            </StackPanel>
+            <StackPanel>
+                <Label Content="Price"/>
+                <TextBox Name="NodePrice"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="1"
+                    Name="MultiChildrenNode" Visibility="Hidden">
+            <Label Content="Free Maintenance (years)"/>
+            <TextBox Name="Maintenance"/>
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="1"
+                    Name="SingleChildrenNode" Visibility="Hidden">
+            <Label Content="Warranty Period (days)"/>
+            <TextBox Name="Warranty"/>
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="1"
+                    Name="NullChildrenNode" Visibility="Hidden"
+                    Margin="0">
+            <StackPanel>
+                <Label Content="Material"/>
+                <TextBox Name="Material"/>
+            </StackPanel>
+            <StackPanel>
+                <Label Content="Production Year"/>
+                <TextBox Name="Year"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.RowSpan="2">
+            <Button Name="Undo" Content="Undo" Click="Undo_Click"/>
+            <Button Name="SaveNewChild" Content="Save" Click="SaveNewChild_Click"/>
+        </StackPanel>
     </Grid>
 </Window>

@@ -50,27 +50,7 @@
                 <RadioButton GroupName="NodeType" Content="Multi children node" Name="Multi"/>
             </StackPanel>
         </StackPanel>
-
-        <!--<StackPanel Grid.Row="1"
-                    Background="Yellow"
-                    Name="ChildrenPanel">
-
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
-
-                <ListBox Grid.Column="0" Name="ProvisionalChildrenList">
-
-                </ListBox>
-                <StackPanel Grid.Column="1"
-                            Background="Brown">
-                    <Label></Label>
-                </StackPanel>
-            </Grid>
-        </StackPanel>-->
-
+        
         <StackPanel Grid.Row="2"
                     Background="Green"
                     HorizontalAlignment="Center">

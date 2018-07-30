@@ -49,20 +49,19 @@
                 </StackPanel>
 
                 <StackPanel Grid.Row="2">
-                    <ListBox Name="ChildrenListBox"
-                             Grid.Row="0" Grid.Column="1"
-                             Background="LightGray"
+                    <ListBox Grid.Column="0"
+                             Name="ChildrenListBox"
                              HorizontalContentAlignment="Stretch">
-                        <DataTemplate>
-                            <Border BorderBrush="Gray" BorderThickness="1"
-                                    Margin="10" Padding="10"
-                                    Background="White">
-                                <DockPanel LastChildFill="False">
-                                    <TextBlock DockPanel.Dock="Left" Text="{Binding Name}" />
-                                    <Button Content="Remove" Name="RemoveChild" Click="RemoveChild_Click"/>
-                                </DockPanel>
-                            </Border>
-                        </DataTemplate>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type local:NodeModel}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}"/>
+                                    <Button Name="RemoveChild"
+                                            Content="Remove"
+                                            Click="Remove_Click"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
                     </ListBox>
                 </StackPanel>
             </Grid>

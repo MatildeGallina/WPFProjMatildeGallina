@@ -36,6 +36,7 @@ namespace MechanicalComponents
                 child.Name = savableChild.Name;
                 child.SerialCode = savableChild.SerialCode;
                 child.Type = savableChild.Type;
+                child.Savable = true;
 
                 Cleaning();
                 this.Close();

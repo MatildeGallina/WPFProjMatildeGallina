@@ -11,17 +11,60 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using MechanicalComponents.Models;
 
 namespace MechanicalComponents
 {
-    /// <summary>
-    /// Logica di interazione per SetPropertiesWindow1.xaml
-    /// </summary>
     public partial class SetPropertiesWindow : Window
     {
-        public SetPropertiesWindow()
+        internal IProperties _properties { get; set; }
+        public INode node { get; set; }
+
+        public SetPropertiesWindow(INode node)
         {
+            this.node = node;
             InitializeComponent();
+            SetVisibility();
+        }
+
+        private void SetVisibility()
+        {
+            switch (node.GetType().ToString())
+            {
+                case "MechanicalComponents.Models.MultiChildrenNode" :
+                    MultiChildrenNode.Visibility = Visibility.Visible;
+                    break;
+                case "MechanicalComponents.Models.SingleChildrenNode":
+                    SingleChildrenNode.Visibility = Visibility.Visible;
+                    break;
+                case "MechanicalComponents.Models.NullChildrenNode":
+                    NullChildrenNode.Visibility = Visibility.Visible;
+                    break;
+                default:
+                    throw new NullReferenceException("Unkonown type");
+            }
+        }
+
+        private void SaveNewChild_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Undo_Click(object sender, RoutedEventArgs e)
+        {
+            Cleaning();
+            this.Close();
+        }
+
+        private void Cleaning()
+        {
+            NodeBrand.Clear();
+            NodeModel.Clear();
+            NodePrice.Clear();
+            Maintenance.Clear();
+            Warranty.Clear();
+            Material.Clear();
+            Year.Clear();
         }
     }
 }

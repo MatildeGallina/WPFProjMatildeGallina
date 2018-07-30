@@ -69,6 +69,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -85,7 +86,47 @@
                     <Label Content="SerialCode:"/>
                     <TextBlock Name="NodeSerialCode"/>
                 </StackPanel>
-
+                <StackPanel Grid.Row="1" Grid.ColumnSpan="2"
+                            Name="CommonProperites" Visibility="Hidden">
+                    <StackPanel>
+                        <Label Content="Brand"/>
+                        <TextBlock Name="NodeBrand"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <Label Content="Model"/>
+                        <TextBlock Name="NodeModel"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <Label Content="Price"/>
+                        <TextBlock Name="NodePrice"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Grid.ColumnSpan="2"
+                            Name="MultiChildrenNodeProperties"
+                            Visibility="Hidden"
+                            Margin="20">
+                    <Label Content="Free Maintenance (years)"/>
+                    <TextBlock Name="Maintenance"/>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Grid.ColumnSpan="2"
+                            Name="SingleChildrenNodeProperties"
+                            Visibility="Hidden"
+                            Margin="20">
+                    <Label Content="Warranty Period (days)"/>
+                    <TextBlock Name="Warranty"/>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Grid.ColumnSpan="2"
+                            Name="NullChildrenNodeProperties"
+                            Visibility="Hidden">
+                    <StackPanel>
+                        <Label Content="Material"/>
+                        <TextBlock Name="Material"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <Label Content="Production Year"/>
+                        <TextBlock Name="Year"/>
+                    </StackPanel>
+                </StackPanel>
             </Grid>
         </StackPanel>
         

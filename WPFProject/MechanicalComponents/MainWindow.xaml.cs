@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -20,12 +21,13 @@ namespace MechanicalComponents
 {
     public partial class MainWindow : Window
     {
+        private IDatabase _database;
+
         public MainWindow()
         {
+            _database = ConnectionToDatabase();
             InitializeComponent();
-
-            var db = ConnectionToDatabase();
-            InitializeTreeview(db);            
+            InitializeTreeview();            
         }
 
         public Database ConnectionToDatabase()
@@ -35,57 +37,129 @@ namespace MechanicalComponents
             return database;
         }
 
-        public void InitializeTreeview(Database db)
+        public void InitializeTreeview()
         {
-            var engines = db.GetNodes(null);
+            var engines = _database.GetNodes(null);
             foreach(Node n in engines)
-                n._database = db;
+                n._database = _database;
 
             EnginesTreeView.ItemsSource = engines;
         }
 
         private void EnginesTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            VisibilitySpecifications();
-
             INode selectedNode = (INode)EnginesTreeView.SelectedItem;
 
+            VisibilitySpecifications(selectedNode);
+            
             NodeName.Text = selectedNode.Name;
             NodeSerialCode.Text = selectedNode.SerialCode;
+
+            ShowPropertiesValues(selectedNode);
         }
 
         private void AddEngine_Click(object sender, RoutedEventArgs e)
         {
-            NewEngineWindow newEngine = new NewEngineWindow();
-            newEngine.ShowDialog();
+            NewEngineWindow engineWindow = new NewEngineWindow();
+            engineWindow.ShowDialog();
+
+            var newEngine = engineWindow._engine;
+
+            if (newEngine.Savable)
+            {
+                _database.SetNode(newEngine, null);
+
+                InitializeTreeview();
+            }
+        }
+
+        private void AddNewChild_Click(object sender, RoutedEventArgs e)
+        {
+            NewChildWindow childWindow = new NewChildWindow();
+            childWindow.ShowDialog();
+            
+            var newChild = childWindow.child;
+            if (newChild.Savable)
+            {
+                INode selectedNode = (INode)EnginesTreeView.SelectedItem;
+                newChild.ParentId = selectedNode.Id;
+            
+                _database.SetNode(newChild, selectedNode.Id);
+            }
         }
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
             INode selectedNode = (INode)EnginesTreeView.SelectedItem;
             // come fare il refresh di un ramo del treeview
-        }
 
-        private void AddNewChild_Click(object sender, RoutedEventArgs e)
-        {
-            NewChildWindow newChild = new NewChildWindow();
-            newChild.ShowDialog();
+            throw new NotImplementedException();
         }
 
         private void AlterProperties_Click(object sender, RoutedEventArgs e)
         {
-            SetPropertiesWindow setProperties = new SetPropertiesWindow();
+            SetPropertiesWindow setProperties = new SetPropertiesWindow((INode)EnginesTreeView.SelectedItem);
             setProperties.ShowDialog();
+
+            // riassegrare i valori inviati dalla setPropertyWindow all'item selezionato
+            // forse serve aggiornare
+
+            throw new NotImplementedException();
         }
         
-        private void VisibilitySpecifications()
+        private void VisibilitySpecifications(INode selectedNode)
         {
-            INode selectedNode = (INode)EnginesTreeView.SelectedItem;
+            CommonProperites.Visibility = Visibility.Visible;
+
+            switch (selectedNode.GetType().ToString())
+            {
+                case "MechanicalComponents.Models.MultiChildrenNode" :
+                    MultiChildrenNodeProperties.Visibility = Visibility.Visible;
+                    SingleChildrenNodeProperties.Visibility = Visibility.Hidden;
+                    NullChildrenNodeProperties.Visibility = Visibility.Hidden;
+                    break;
+                case "MechanicalComponents.Models.SingleChildrenNode":
+                    MultiChildrenNodeProperties.Visibility = Visibility.Hidden;
+                    SingleChildrenNodeProperties.Visibility = Visibility.Visible;
+                    NullChildrenNodeProperties.Visibility = Visibility.Hidden;
+                    break;
+                case "MechanicalComponents.Models.NullChildrenNode":
+                    MultiChildrenNodeProperties.Visibility = Visibility.Hidden;
+                    SingleChildrenNodeProperties.Visibility = Visibility.Hidden;
+                    NullChildrenNodeProperties.Visibility = Visibility.Visible;
+                    break;
+                default:
+                    throw new NullReferenceException("Unknown type");
+            }
 
             AddNewChild.IsEnabled = selectedNode.CanHaveChild();
             Refresh.IsEnabled = true;
+
             Informations.Visibility = Visibility.Visible;
+
             SelectedItemButtons.Visibility = Visibility.Visible;
+        }
+
+        private void ShowPropertiesValues(INode selectedNode)
+        {
+            NodeBrand.Text = selectedNode.properties.Brand;
+            NodeModel.Text = selectedNode.properties.Model;
+            NodePrice.Text = selectedNode.properties.Price.ToString();
+            switch (selectedNode.GetType().ToString())
+            {
+                case "MechanicalComponents.Models.MultiChildrenNode":
+                    Maintenance.Text = selectedNode.properties.FreeMaintenance.ToString();
+                    break;
+                case "MechanicalComponents.Models.SingleChildrenNode":
+                    Warranty.Text = selectedNode.properties.WarrantyPeriod.ToString();
+                    break;
+                case "MechanicalComponents.Models.NullChildrenNode":
+                    Material.Text = selectedNode.properties.Material;
+                    Year.Text = selectedNode.properties.Year.ToString();
+                    break;
+                default:
+                    throw new NullReferenceException("Unknown type");
+            }
         }
     }
 }
