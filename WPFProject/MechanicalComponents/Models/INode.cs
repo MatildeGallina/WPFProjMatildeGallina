@@ -16,6 +16,8 @@ namespace MechanicalComponents.Models
         List<INode> Children { get; }
         IProperties properties { get; set; }
 
+        List<INode> LoadChildren();
+        void AddChild(NodeModel child);
         bool CanHaveChild();
     }
 }

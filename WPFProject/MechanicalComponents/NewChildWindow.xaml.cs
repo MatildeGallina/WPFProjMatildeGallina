@@ -18,32 +18,41 @@ namespace MechanicalComponents
     public partial class NewChildWindow : Window
     {
         internal NodeModel child { get; set; }
+        private IDatabase _database;
 
         public NewChildWindow()
         {
             child = new NodeModel();
+            _database = ConnectionToDatabase();
             InitializeComponent();
+        }
+
+        public Database ConnectionToDatabase()
+        {
+            Database database = new Database();
+            database.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MockMechanicalComponentsDatabase;");
+            return database;
         }
 
         private void SaveNewChild_Click(object sender, RoutedEventArgs e)
         {
-            var savableChild = new NodeModel(NewChildName.Text, NewChildSN.Text, ReturnRadioType());
+            child.Name = NewChildName.Text;
+            child.SerialCode = NewChildSN.Text;
+            child.Type = ReturnRadioType();
+            
             var validator = new Validator();
-            var errors = validator.ValidateNode(savableChild);
+            var errors = validator.ValidateNode(child);
 
             if (errors.Count == 0)
             {
-                child.Name = savableChild.Name;
-                child.SerialCode = savableChild.SerialCode;
-                child.Type = savableChild.Type;
-                child.Savable = true;
+                _database.SetNode(child, null);
 
                 Cleaning();
                 this.Close();
             }
             else
             {
-                MessageBox.Show("Invalid set values!");
+                MessageBox.Show("Operation failed! Invalid name or serialCode value!");
             }
         }
 

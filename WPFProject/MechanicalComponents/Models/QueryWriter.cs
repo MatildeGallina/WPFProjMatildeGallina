@@ -8,49 +8,52 @@ namespace MechanicalComponents.Models
 {
     class NodeQueryWriter : INodeQueryWriter
     {
-        public string GetByParentId(int? ParentId)
+        public string GetByParentId(int? parentId)
         {
-            switch(ParentId)
+            switch(parentId)
             {
                 case null:
                     return $"select * from Nodes " +
                         $"where ParentId is NULL ";
                 default:
                     return $"select * from Nodes " +
-                    $"where ParentId = {ParentId} ";
+                    $"where ParentId = {parentId} ";
             }
         }
 
-        public string GetById(int Id)
+        public string GetById(int id)
         {
             return "select * from Nodes " +
-                $"where Id = {Id}";
+                $"where Id = {id}";
         }
 
-        public string SetNode(NodeModel node, int? ParentId)
+        public string SetNode(NodeModel node, int? parentId)
         {
-            switch (ParentId)
-            {
-                case null:
-                    return $"insert into Nodes " +
+            var query = $"insert into Nodes " +
                         $"(Name, SerialCode, ParentId, Type) " +
                         $"OUTPUT Inserted.Id " +
-                        $"values " +
-                        $"('{node.Name}', '{node.SerialCode}', NULL, '{node.Type}') ";
-                default:
-                    return $"insert into Nodes " +
-                        $"(Name, SerialCode, ParentId, Type) " +
-                        $"OUTPUT Inserted.ID " +
-                        $"values " +
-                        $"('{node.Name}', '{node.SerialCode}', {ParentId}, '{node.Type}') ";
-            }
+                        $"values ";
 
-            
+
+            switch (parentId)
+            {
+                case null:
+                    return query += $"('{node.Name}', '{node.SerialCode}', NULL, '{node.Type}') ";
+                default:
+                    return  query += $"('{node.Name}', '{node.SerialCode}', {parentId}, '{node.Type}') ";
+            }
         }
 
-        public string DeleteById(int Id)
+        public string DeleteById(int id)
         {
-            return $"delete from Nodes where Id = {Id}";
+            return $"delete from Nodes where Id = {id}";
+        }
+
+        public string UpdateParentId(int id, int parentId)
+        {
+            return "update Nodes " +
+                $"set ParentId = {parentId} " +
+                $"where Id = {id}";
         }
     }
 }

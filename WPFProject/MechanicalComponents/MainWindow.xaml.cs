@@ -63,14 +63,7 @@ namespace MechanicalComponents
             NewEngineWindow engineWindow = new NewEngineWindow();
             engineWindow.ShowDialog();
 
-            var newEngine = engineWindow._engine;
-
-            if (newEngine.Savable)
-            {
-                _database.SetNode(newEngine, null);
-
-                InitializeTreeview();
-            }
+            InitializeTreeview();
         }
 
         private void AddNewChild_Click(object sender, RoutedEventArgs e)
@@ -79,13 +72,10 @@ namespace MechanicalComponents
             childWindow.ShowDialog();
             
             var newChild = childWindow.child;
-            if (newChild.Savable)
-            {
-                INode selectedNode = (INode)EnginesTreeView.SelectedItem;
-                newChild.ParentId = selectedNode.Id;
-            
-                _database.SetNode(newChild, selectedNode.Id);
-            }
+            INode selectedNode = (INode)EnginesTreeView.SelectedItem;
+            newChild.ParentId = selectedNode.Id; // potrebbe anche essere inutile
+
+            _database.UpdateParentId(newChild.Id, selectedNode.Id);
         }
 
         private void Refresh_Click(object sender, RoutedEventArgs e)

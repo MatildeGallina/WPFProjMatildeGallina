@@ -61,22 +61,6 @@ namespace MechanicalComponents.Test
 
             var child2 = new NodeModel("child 2", "5678BB5678", "SingleChildrenNode");
             scn.AddChild(child2);
-
-            // non funziona perchè non aggiungo questi due figli al database e quindi mi torna sempre true
-        }
-
-        [TestMethod]
-        public void SingleChildNode_lazy_initialization_list_of_children()
-        {
-            var ncn = new NullChildrenNode(newDatabase())
-            {
-                Id = 1
-            };
-
-            Assert.AreEqual(false, ncn.WereChildrenLoaded());
-
-            Assert.AreEqual(3, ncn.Children.Count);
-            Assert.AreEqual(true, ncn.WereChildrenLoaded());
         }
 
         [TestMethod]

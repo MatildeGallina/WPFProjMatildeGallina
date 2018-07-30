@@ -18,7 +18,7 @@ namespace MechanicalComponents.Test
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void GetNode_with_null_connection_string()
         {
             Database database = new Database();
@@ -27,7 +27,7 @@ namespace MechanicalComponents.Test
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void GetNode_with_empty_connection_string()
         {
             Database database = new Database();
@@ -36,7 +36,7 @@ namespace MechanicalComponents.Test
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void GetNode_with_blanks_connection_string()
         {
             Database database = new Database();
@@ -45,7 +45,7 @@ namespace MechanicalComponents.Test
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void GetNode_with_wrong_connection_string()
         {
             Database database = new Database();

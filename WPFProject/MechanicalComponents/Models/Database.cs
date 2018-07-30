@@ -34,116 +34,84 @@ namespace MechanicalComponents.Models
         public static Database Instance { get; }
         #endregion
 
-        public List<INode> GetNodes(int? ParentId)
+        public List<INode> GetNodes(int? parentId)
         {
             var nodes = new List<INode>();
-            try
+
+            using (var conn = this.CreateConnection())
+            using (var comm = conn.CreateCommand())
             {
-                using (var conn = this.CreateConnection())
-                using (var comm = conn.CreateCommand())
-                {
-                    conn.Open();
+                conn.Open();
 
-                    comm.CommandType = CommandType.Text;
-                    comm.CommandText = _queryWriter.GetByParentId(ParentId);
-                    UpdateList(comm, nodes);
-
-                    conn.Dispose();
-                }
-                return nodes;
+                comm.CommandType = CommandType.Text;
+                comm.CommandText = _queryWriter.GetByParentId(parentId);
+                UpdateList(comm, nodes);
             }
-            catch (Exception)
+            return nodes;
+        }
+
+        public INode GetNodeById(int id)
+        {
+            using (var conn = this.CreateConnection())
+            using (var comm = conn.CreateCommand())
             {
-                // connessione non riuscita per quanlche motivo
-                throw new ArgumentException("Connection failed");
+                conn.Open();
+
+                comm.CommandType = CommandType.Text;
+                comm.CommandText = _queryWriter.GetById(id);
+
+                var reader = comm.ExecuteReader();
+                reader.Read();
+                var node = AddValuesToNode(reader);
+                    
+                return node;
             }
         }
 
-        public INode GetNodeById(int Id)
+        public void SetNode(NodeModel node, int? parentId)
         {
-            try
+            using (var conn = this.CreateConnection())
+            using (var comm = conn.CreateCommand())
             {
-                using (var conn = this.CreateConnection())
-                using (var comm = conn.CreateCommand())
+                conn.Open();
+
+                comm.CommandType = CommandType.Text;
+                comm.CommandText = _queryWriter.SetNode(node, parentId);
+
+                node.Id = (int)comm.ExecuteScalar();
+
+                foreach(var child in node.Children)
                 {
-                    conn.Open();
-
-                    comm.CommandType = CommandType.Text;
-                    comm.CommandText = _queryWriter.GetById(Id);
-
-                    var reader = comm.ExecuteReader();
-                    reader.Read();
-                    var node = AddValuesToNode(reader);
-
-                    conn.Dispose();
-                    return node;
+                    UpdateParentId(child.Id, node.Id);
                 }
-            }
-            catch (Exception)
-            {
-                // connessione non riuscita per quanlche motivo
-                throw new ArgumentException("Connection failed");
-            }
-}
-
-        public void SetNode(NodeModel node, int? ParentId)
-        {
-            try
-            {
-                using (var conn = this.CreateConnection())
-                using (var comm = conn.CreateCommand())
-                {
-                    conn.Open();
-
-                    comm.CommandType = CommandType.Text;
-                    comm.CommandText = _queryWriter.SetNode(node, ParentId);
-
-                    node.Id = (int)comm.ExecuteScalar();
-
-                    foreach(var child in node.Children)
-                    {
-                        child.ParentId = node.Id;
-
-                        using(var comm2 = conn.CreateCommand())
-                        {
-                            comm2.CommandType = CommandType.Text;
-                            comm2.CommandText = _queryWriter.SetNode(child, child.ParentId);
-
-                            child.Id = (int)comm2.ExecuteScalar();
-                        }
-                    }
-
-                    conn.Dispose();
-                }
-            }
-            catch
-            {
-                // connessione non riuscita per quanlche motivo
-                throw new ArgumentException("Connection failed");
             }
         }
         
-        public void DeleteNode(int Id)
+        public void DeleteNode(int id)
         {
-            try
+            using (var conn = this.CreateConnection())
+            using (var comm = conn.CreateCommand())
             {
-                using (var conn = this.CreateConnection())
-                using (var comm = conn.CreateCommand())
-                {
-                    conn.Open();
+                conn.Open();
 
-                    comm.CommandType = CommandType.Text;
-                    comm.CommandText = _queryWriter.DeleteById(Id);
+                comm.CommandType = CommandType.Text;
+                comm.CommandText = _queryWriter.DeleteById(id);
 
-                    comm.ExecuteNonQuery();
-
-                    conn.Dispose();
-                }
+                comm.ExecuteNonQuery();
             }
-            catch
+        }
+
+        public void UpdateParentId(int id, int parentId)
+        {
+            using (var conn = this.CreateConnection())
+            using (var comm = conn.CreateCommand())
             {
-                // connessione non riuscita per quanlche motivo
-                throw new ArgumentException("Connection failed");
+                conn.Open();
+
+                comm.CommandType = CommandType.Text;
+                comm.CommandText = _queryWriter.UpdateParentId(id, parentId);
+
+                comm.ExecuteNonQuery();
             }
         }
 
