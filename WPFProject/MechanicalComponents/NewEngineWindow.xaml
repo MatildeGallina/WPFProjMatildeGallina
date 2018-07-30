@@ -5,16 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MechanicalComponents.Models"
         mc:Ignorable="d"
-        Title="NewEngine" Height="450" Width="500"
+        Title="New Engine" Height="450" Width="500"
         Background="WhiteSmoke">
     <Window.Resources>
+        <Style TargetType="Grid">
+            <Setter Property="Margin" Value="5"/>
+        </Style>
         <Style TargetType="StackPanel">
+            <Setter Property="Margin" Value="5"/>
             <Setter Property="Orientation" Value="Vertical"/>
-            <Setter Property="Margin" Value="10"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style TargetType="ListBox">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
         </Style>
         <Style TargetType="Button">
-            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Margin" Value="5"/>
             <Setter Property="Padding" Value="20,5"/>
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="MinWidth" Value="200"/>
+            <Setter Property="Background" Value="WhiteSmoke"/>
         </Style>
     </Window.Resources>
     
@@ -24,8 +47,7 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0"
-                    Background="LightGray">
+        <StackPanel Grid.Column="0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -36,22 +58,17 @@
 
                 <StackPanel Grid.Row="0">
                     <Label Content="Name"/>
-                    <TextBox Name="EngineName"
-                             HorizontalAlignment="Center" Width="200"
-                             Background="White"/>
+                    <TextBox Name="EngineName"/>
                 </StackPanel>
                 
                 <StackPanel Grid.Row="1">
                     <Label Content="SerialCode"/>
-                    <TextBox Name="EngineSerialCode"
-                             HorizontalAlignment="Center" Width="200"
-                             Background="White"/>
+                    <TextBox Name="EngineSerialCode"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="2">
                     <ListBox Grid.Column="0"
-                             Name="ChildrenListBox"
-                             HorizontalContentAlignment="Stretch">
+                             Name="ChildrenListBox">
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type local:NodeModel}">
                                 <StackPanel Orientation="Horizontal">
@@ -69,8 +86,7 @@
         
         <StackPanel Grid.Column="1">
             <Button Name="AddChild" Content="Add child"
-                    Click="AddChild_Click"
-                    VerticalAlignment="Top"/>
+                    Click="AddChild_Click"/>
             <Button Name="SetProperties" Content="Set Properties"
                     Click="SetProperties_Click"/>
             <Button Name="Save" Content="Save"

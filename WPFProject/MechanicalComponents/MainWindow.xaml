@@ -5,21 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MechanicalComponents.Models"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Mechanical Components" Height="600" Width="1000">
     <Window.Resources>
-        <Style TargetType="Button">
-            <Setter Property="Margin" Value="10"/>
-            <Setter Property="Padding" Value="20,5"/>
-        </Style>
         <Style TargetType="Grid">
-            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Margin" Value="5"/>
         </Style>
         <Style TargetType="StackPanel">
-            <Setter Property="Margin" Value="10"/>
-            <Setter Property="Orientation" Value="Horizontal"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Orientation" Value="Vertical"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
         <Style TargetType="TreeView">
-            <Setter Property="Margin" Value="10" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="20,5"/>
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="MinWidth" Value="200"/>
+            <Setter Property="Background" Value="WhiteSmoke"/>
+        </Style>
+        <Style TargetType="Image">
+            <Setter Property="Margin" Value="5"/>
         </Style>
     </Window.Resources>
 
@@ -40,14 +59,9 @@
                     <HierarchicalDataTemplate
                                 DataType="{x:Type local:Node}"
                                 ItemsSource="{Binding Children}">
-                        <StackPanel Orientation="Horizontal"
-                                    Margin="10">
-                            <Image Height="20"
-                                           Margin="5"
-                                           Source="{Binding Icon}">
-                            </Image>
-                            <TextBlock Text="{Binding Name}" Name="ItemName"
-                                               HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding Icon}"/>
+                            <TextBlock Text="{Binding Name}" Name="ItemName"/>
                         </StackPanel>
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>
@@ -55,7 +69,7 @@
         </StackPanel>
         
         <StackPanel Grid.Column="0" Grid.Row="1"
-                    Orientation="Horizontal" VerticalAlignment="Bottom">
+                    Orientation="Horizontal">
             <Button Name="Refresh" Content="Refresh"
                     IsEnabled="False"
                     Click="Refresh_Click"/>
@@ -63,11 +77,11 @@
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="0"
-                    Name="Informations" Visibility="Hidden"
-                    Orientation="Vertical">
+                    Name="Informations"
+                    Visibility="Hidden">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
@@ -76,56 +90,63 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Row="0" Grid.Column="0"
-                            Orientation="Vertical">
+                <StackPanel Grid.Row="0" Grid.Column="0">
                     <Label Content="Name:"/>
                     <TextBlock Name="NodeName"/>
                 </StackPanel>
-                <StackPanel Grid.Row="0" Grid.Column="1"
-                            Orientation="Vertical">
+                <StackPanel Grid.Row="0" Grid.Column="1">
                     <Label Content="SerialCode:"/>
                     <TextBlock Name="NodeSerialCode"/>
                 </StackPanel>
                 <StackPanel Grid.Row="1" Grid.ColumnSpan="2"
-                            Name="CommonProperites" Visibility="Hidden">
-                    <StackPanel>
-                        <Label Content="Brand"/>
-                        <TextBlock Name="NodeBrand"/>
-                    </StackPanel>
-                    <StackPanel>
-                        <Label Content="Model"/>
-                        <TextBlock Name="NodeModel"/>
-                    </StackPanel>
-                    <StackPanel>
-                        <Label Content="Price"/>
-                        <TextBlock Name="NodePrice"/>
-                    </StackPanel>
-                </StackPanel>
-                <StackPanel Grid.Row="2" Grid.ColumnSpan="2"
-                            Name="MultiChildrenNodeProperties"
-                            Visibility="Hidden"
-                            Margin="20">
-                    <Label Content="Free Maintenance (years)"/>
-                    <TextBlock Name="Maintenance"/>
-                </StackPanel>
-                <StackPanel Grid.Row="2" Grid.ColumnSpan="2"
-                            Name="SingleChildrenNodeProperties"
-                            Visibility="Hidden"
-                            Margin="20">
-                    <Label Content="Warranty Period (days)"/>
-                    <TextBlock Name="Warranty"/>
-                </StackPanel>
-                <StackPanel Grid.Row="2" Grid.ColumnSpan="2"
-                            Name="NullChildrenNodeProperties"
-                            Visibility="Hidden">
-                    <StackPanel>
-                        <Label Content="Material"/>
-                        <TextBlock Name="Material"/>
-                    </StackPanel>
-                    <StackPanel>
-                        <Label Content="Production Year"/>
-                        <TextBlock Name="Year"/>
-                    </StackPanel>
+                            Background="LightGray">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        
+                        <StackPanel Grid.Row="0"
+                                    Name="CommonProperites"
+                                    Visibility="Hidden" Orientation="Horizontal">
+                            <StackPanel>
+                                <Label Content="Brand"/>
+                                <TextBlock Name="NodeBrand"/>
+                            </StackPanel>
+                            <StackPanel>
+                                <Label Content="Model"/>
+                                <TextBlock Name="NodeModel"/>
+                            </StackPanel>
+                            <StackPanel>
+                                <Label Content="Price"/>
+                                <TextBlock Name="NodePrice"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1"
+                                    Name="MultiChildrenNodeProperties"
+                                    Visibility="Hidden" HorizontalAlignment="Left" Margin="10">
+                            <Label Content="Free Maintenance (years)"/>
+                            <TextBlock Name="Maintenance"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1"
+                                    Name="SingleChildrenNodeProperties"
+                                    Visibility="Hidden"  HorizontalAlignment="Left" Margin="10">
+                            <Label Content="Warranty Period (days)"/>
+                            <TextBlock Name="Warranty"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1"
+                                    Name="NullChildrenNodeProperties"
+                                    Visibility="Hidden" Orientation="Horizontal"  HorizontalAlignment="Left">
+                            <StackPanel>
+                                <Label Content="Material"/>
+                                <TextBlock Name="Material"/>
+                            </StackPanel>
+                            <StackPanel>
+                                <Label Content="Production Year"/>
+                                <TextBlock Name="Year"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
                 </StackPanel>
             </Grid>
         </StackPanel>
