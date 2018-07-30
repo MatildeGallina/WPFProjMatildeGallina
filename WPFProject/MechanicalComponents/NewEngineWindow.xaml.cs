@@ -64,7 +64,7 @@ namespace MechanicalComponents
             _engine.Name = EngineName.Text;
             _engine.SerialCode = EngineSerialCode.Text;
             _engine.Type = "MultiChildrenNode";
-            var validator = new Validator();
+            var validator = new Validator(_database);
             var errors = validator.ValidateNode(_engine);
 
             if(errors.Count == 0)

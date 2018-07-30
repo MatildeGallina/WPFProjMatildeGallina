@@ -39,9 +39,29 @@ namespace MechanicalComponents.Models
 
     public class SerialCodeValidator : BaseValidator
     {
+        public SerialCodeValidator(IDatabase database)
+        {
+            _database = database;
+        }
+
+        private IDatabase _database { get; set; }
+
         internal override bool IsNotValid(NodeModel model)
         {
-            return string.IsNullOrWhiteSpace(model.SerialCode) || model.SerialCode.Length != 10;
+            return string.IsNullOrWhiteSpace(model.SerialCode) ||
+                model.SerialCode.Length != 10 ||
+                UniqueValue(model);
+        }
+
+        private bool UniqueValue(NodeModel model)
+        {
+            var serialCodes = _database.GetSerialCodes();
+
+            foreach(var s in serialCodes)
+                if (model.SerialCode == s)
+                    return true;
+
+            return false;
         }
 
         internal override string ErrorMessage()
@@ -52,11 +72,12 @@ namespace MechanicalComponents.Models
 
     public class Validator
     {
-        public Validator()
+        public Validator(IDatabase database)
         {
+            _database = database;
             _validators = CreateList();
         }
-
+        private IDatabase _database { get; set; }
         private List<BaseValidator> _validators { get; }
 
         private List<BaseValidator> CreateList()
@@ -64,7 +85,7 @@ namespace MechanicalComponents.Models
             var validators = new List<BaseValidator>()
             {
                 new NameValidator(),
-                new SerialCodeValidator(),
+                new SerialCodeValidator(_database),
             };
 
             return validators;

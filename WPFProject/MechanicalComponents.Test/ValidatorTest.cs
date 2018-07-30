@@ -52,10 +52,18 @@ namespace MechanicalComponents.Test
     [TestClass]
     public class SerialCodeValidatorTest
     {
+        private IDatabase _database { get { return newDatabase(); } }
+        IDatabase newDatabase()
+        {
+            Database database = new Database();
+            database.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MockMechanicalComponentsDatabase;");
+            return database;
+        }
+
         [TestMethod]
         public void SerialCodeNotNull()
         {
-            var validator = new SerialCodeValidator();
+            var validator = new SerialCodeValidator(_database);
             var errors = validator.Validate(new NodeModel("", null, ""));
 
             Assert.AreEqual(1, errors.Count);
@@ -65,7 +73,7 @@ namespace MechanicalComponents.Test
         [TestMethod]
         public void SerialCodeNotEmpty()
         {
-            var validator = new SerialCodeValidator();
+            var validator = new SerialCodeValidator(_database);
             var errors = validator.Validate(new NodeModel("", "", ""));
 
             Assert.AreEqual(1, errors.Count);
@@ -75,7 +83,7 @@ namespace MechanicalComponents.Test
         [TestMethod]
         public void SerialCodeNotBlanks()
         {
-            var validator = new SerialCodeValidator();
+            var validator = new SerialCodeValidator(_database);
             var errors = validator.Validate(new NodeModel("", "      ", ""));
 
             Assert.AreEqual(1, errors.Count);
@@ -85,7 +93,7 @@ namespace MechanicalComponents.Test
         [TestMethod]
         public void SerialCodeTooLong()
         {
-            var validator = new SerialCodeValidator();
+            var validator = new SerialCodeValidator(_database);
             var errors = validator.Validate(new NodeModel("", "12345678910", ""));
 
             Assert.AreEqual(1, errors.Count);
@@ -95,7 +103,7 @@ namespace MechanicalComponents.Test
         [TestMethod]
         public void SerialCodeTooShort()
         {
-            var validator = new SerialCodeValidator();
+            var validator = new SerialCodeValidator(_database);
             var errors = validator.Validate(new NodeModel("", "1234567", ""));
 
             Assert.AreEqual(1, errors.Count);
@@ -105,7 +113,7 @@ namespace MechanicalComponents.Test
         [TestMethod]
         public void SerialCodeValid()
         {
-            var validator = new SerialCodeValidator();
+            var validator = new SerialCodeValidator(_database);
             var errors = validator.Validate(new NodeModel("", "1234567891", ""));
 
             Assert.AreEqual(0, errors.Count);

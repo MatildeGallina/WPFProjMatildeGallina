@@ -68,6 +68,29 @@ namespace MechanicalComponents.Models
             }
         }
 
+        public List<string> GetSerialCodes()
+        {
+            var serialCodes = new List<string>();
+
+            using (var conn = this.CreateConnection())
+            using (var comm = conn.CreateCommand())
+            {
+                conn.Open();
+
+                comm.CommandType = CommandType.Text;
+                comm.CommandText = _queryWriter.GetSerialCodes();
+
+                var reader = comm.ExecuteReader();
+                while (reader.Read())
+                {
+                    var value = (string)reader["SerialCode"];
+
+                    serialCodes.Add(value);
+                }
+                return serialCodes;
+            }
+        }
+
         public void SetNode(NodeModel node, int? parentId)
         {
             using (var conn = this.CreateConnection())

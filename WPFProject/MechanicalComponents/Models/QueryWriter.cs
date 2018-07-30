@@ -27,6 +27,11 @@ namespace MechanicalComponents.Models
                 $"where Id = {id}";
         }
 
+        public string GetSerialCodes()
+        {
+            return "select SerialCode from Nodes";
+        }
+
         public string SetNode(NodeModel node, int? parentId)
         {
             var query = $"insert into Nodes " +

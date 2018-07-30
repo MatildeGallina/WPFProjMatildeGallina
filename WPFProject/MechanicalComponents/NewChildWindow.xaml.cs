@@ -40,7 +40,7 @@ namespace MechanicalComponents
             child.SerialCode = NewChildSN.Text;
             child.Type = ReturnRadioType();
             
-            var validator = new Validator();
+            var validator = new Validator(_database);
             var errors = validator.ValidateNode(child);
 
             if (errors.Count == 0)
