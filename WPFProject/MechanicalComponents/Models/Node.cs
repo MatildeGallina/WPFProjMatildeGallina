@@ -52,7 +52,7 @@ namespace MechanicalComponents.Models
         public MultiChildrenNode(IDatabase database)
             : base(database)
         {
-            Icon = @"/WPFProject/MechanicalComponents;Icons/MultiChildrenNode.jpg";
+            Icon = @"Icons\MultiChildrenNode.jpg";
             _Children = new Lazy<List<INode>>(LoadChildren);
             properties = new MultiChildrenNodeProperties();
         }
@@ -80,7 +80,7 @@ namespace MechanicalComponents.Models
         public SingleChildrenNode(IDatabase database)
             : base(database)
         {
-            Icon = "SingleChildrenIcon.jpg";
+            Icon = @"Icons\SingleChildrenNode.jpg";
             _Children = new Lazy<List<INode>>(LoadChildren);
             properties = new SingleChildrenNodeProperties();
         }
@@ -111,7 +111,7 @@ namespace MechanicalComponents.Models
         public NullChildrenNode(IDatabase database)
             : base(database)
         {
-            Icon = "NullChildrenIcon.jpg";
+            Icon = @"Icons\NullChildrenNode.jpg";
             properties = new NullChildrenNodeProperties();
         }
 

@@ -27,6 +27,11 @@ namespace MechanicalComponents.Models
                 $"where Id = {id}";
         }
 
+        public string GetProperties(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public string GetSerialCodes()
         {
             return "select SerialCode from Nodes";
@@ -59,6 +64,11 @@ namespace MechanicalComponents.Models
             return "update Nodes " +
                 $"set ParentId = {parentId} " +
                 $"where Id = {id}";
+        }
+
+        public string UpdateProperties(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

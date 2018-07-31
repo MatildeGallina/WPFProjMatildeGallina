@@ -68,6 +68,11 @@ namespace MechanicalComponents.Models
             }
         }
 
+        public void GetProperties(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<string> GetSerialCodes()
         {
             var serialCodes = new List<string>();
@@ -133,6 +138,20 @@ namespace MechanicalComponents.Models
 
                 comm.CommandType = CommandType.Text;
                 comm.CommandText = _queryWriter.UpdateParentId(id, parentId);
+
+                comm.ExecuteNonQuery();
+            }
+        }
+
+        public void UpdateProperties(int id)
+        {
+            using (var conn = this.CreateConnection())
+            using (var comm = conn.CreateCommand())
+            {
+                conn.Open();
+
+                comm.CommandType = CommandType.Text;
+                comm.CommandText = _queryWriter.UpdateProperties(id);
 
                 comm.ExecuteNonQuery();
             }

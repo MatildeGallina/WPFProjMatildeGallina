@@ -10,9 +10,11 @@ namespace MechanicalComponents.Models
 
         List<INode> GetNodes(int? id);
         INode GetNodeById(int id);
+        void GetProperties(int id);
         List<string> GetSerialCodes();
         void SetNode(NodeModel node, int? parentId);
         void DeleteNode(int id);
         void UpdateParentId(int id, int parentId);
+        void UpdateProperties(int id);
     }
 }

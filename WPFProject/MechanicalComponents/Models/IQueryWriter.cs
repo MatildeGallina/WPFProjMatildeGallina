@@ -12,7 +12,9 @@ namespace MechanicalComponents.Models
         string GetById(int Id);
         string GetSerialCodes();
         string SetNode(NodeModel n, int? ParentId);
+        string GetProperties(int id);
         string DeleteById(int Id);
         string UpdateParentId(int id, int parentId);
+        string UpdateProperties(int id);
     }
 }
