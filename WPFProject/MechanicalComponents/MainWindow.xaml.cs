@@ -73,7 +73,6 @@ namespace MechanicalComponents
             
             var newChild = childWindow.child;
             INode selectedNode = (INode)EnginesTreeView.SelectedItem;
-            newChild.ParentId = selectedNode.Id; // potrebbe anche essere inutile
 
             _database.UpdateParentId(newChild.Id, selectedNode.Id);
         }

@@ -23,8 +23,6 @@ namespace MechanicalComponents.Models
 
         public IProperties properties { get; set; }
 
-        public abstract List<INode> Children { get; }
-
         internal IDatabase _database;
 
         public List<INode> LoadChildren()
@@ -57,7 +55,7 @@ namespace MechanicalComponents.Models
             properties = new MultiChildrenNodeProperties();
         }
 
-        public override List<INode> Children
+        public List<INode> Children
         {
             get { return _Children.Value; }
         }
@@ -81,25 +79,14 @@ namespace MechanicalComponents.Models
             : base(database)
         {
             Icon = @"Icons\SingleChildrenNode.jpg";
-            _Children = new Lazy<List<INode>>(LoadChildren);
             properties = new SingleChildrenNodeProperties();
         }
 
-        public override List<INode> Children
-        {
-            get { return _Children.Value; }
-        }
-
-        private readonly Lazy<List<INode>> _Children;
-
-        public bool WereChildrenLoaded()
-        {
-            return _Children.IsValueCreated;
-        }
+        public INode Children { get; set; }
 
         public override bool CanHaveChild()
         {
-            if (Children.Count > 0)
+            if (Children != null)
                 return false;
             else
                 return true;
@@ -114,8 +101,6 @@ namespace MechanicalComponents.Models
             Icon = @"Icons\NullChildrenNode.jpg";
             properties = new NullChildrenNodeProperties();
         }
-
-        public override List<INode> Children { get { return null; } }
 
         public override bool CanHaveChild()
         {
