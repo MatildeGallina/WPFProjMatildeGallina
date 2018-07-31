@@ -27,8 +27,6 @@ namespace MechanicalComponents
             _engine = new NodeModel();
             _database = ConnectionToDatabase();
             InitializeComponent();
-
-            ChildrenListBox.ItemsSource = _engine.Children;
         }
 
         public Database ConnectionToDatabase()
@@ -36,27 +34,6 @@ namespace MechanicalComponents
             Database database = new Database();
             database.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MockMechanicalComponentsDatabase;");
             return database;
-        }
-
-        private void AddChild_Click(object sender, RoutedEventArgs e)
-        {
-            var childWindow = new NewChildWindow();
-            childWindow.ShowDialog();
-
-            var newChild = childWindow.child;
-            _engine.Children.Add(newChild); // mi serve per aggiornare la listbox ma poi non devo salvare anche la lista di figli!!!
-        }
-
-        private void Remove_Click(object sender, RoutedEventArgs e)
-        {
-            var child = (NodeModel)ChildrenListBox.SelectedItem;
-            _database.DeleteNode(child.Id);
-            _engine.Children.Remove(child);
-        }
-
-        private void SetProperties_Click(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)

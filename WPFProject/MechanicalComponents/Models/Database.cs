@@ -108,13 +108,12 @@ namespace MechanicalComponents.Models
 
                 node.Id = (int)comm.ExecuteScalar();
 
-                foreach(var child in node.Children)
-                {
-                    UpdateParentId(child.Id, node.Id);
-                }
+                // quando un engine aveva una lista di figli dovevo aggiornargli il parentid
+                //foreach(var child in node.Children)
+                //{
+                //    UpdateParentId(child.Id, node.Id);
+                //}
             }
-
-            //  switch se è un single node gli setto la proprietà children con quel valore
         }
         
         public void DeleteNode(int id)
@@ -158,6 +157,24 @@ namespace MechanicalComponents.Models
                 comm.ExecuteNonQuery();
             }
         }
+
+        //private void SetChildToSingleChildrenNode(int id, SingleChildrenNode parentNode)
+        //{
+        //    using (var conn = this.CreateConnection())
+        //    using (var comm = conn.CreateCommand())
+        //    {
+        //        conn.Open();
+
+        //        comm.CommandType = CommandType.Text;
+        //        comm.CommandText = _queryWriter.GetById(id);
+
+        //        var reader = comm.ExecuteReader();
+        //        reader.Read();
+        //        var node = AddValuesToNode(reader);
+
+        //        parentNode.Children = node;
+        //    }
+        //}
 
         private static void UpdateList(SqlCommand comm, List<INode> nodes)
         {

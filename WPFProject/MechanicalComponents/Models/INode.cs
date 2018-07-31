@@ -13,9 +13,9 @@ namespace MechanicalComponents.Models
         string SerialCode { get; set; }
         int? ParentId { get; set; }
         string Icon { get; set; }
+        
         IProperties properties { get; set; }
-
-        List<INode> LoadChildren();
+        
         void AddChild(NodeModel child);
         bool CanHaveChild();
     }

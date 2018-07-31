@@ -23,16 +23,7 @@ namespace MechanicalComponents.Models
 
         public IProperties properties { get; set; }
 
-        internal IDatabase _database;
-
-        public List<INode> LoadChildren()
-        {
-            var list = _database.GetNodes(this.Id);
-            foreach (Node n in list)
-                n._database = this._database;
-
-            return list;
-        }
+        public IDatabase _database;
 
         public void AddChild(NodeModel child)
         {
@@ -61,6 +52,15 @@ namespace MechanicalComponents.Models
         }
 
         private readonly Lazy<List<INode>> _Children;
+
+        public List<INode> LoadChildren()
+        {
+            var list = _database.GetNodes(this.Id);
+            foreach (Node n in list)
+                n._database = this._database;
+
+            return list;
+        }
         
         public bool WereChildrenLoaded()
         {
@@ -79,19 +79,70 @@ namespace MechanicalComponents.Models
             : base(database)
         {
             Icon = @"Icons\SingleChildrenNode.jpg";
+            _Children = _Children = new Lazy<List<INode>>(LoadChildren);
             properties = new SingleChildrenNodeProperties();
         }
 
-        public INode Children { get; set; }
+        public List<INode> Children
+        {
+            get { return _Children.Value; }
+        }
+
+        private readonly Lazy<List<INode>> _Children;
+
+        public List<INode> LoadChildren()
+        {
+            var list = _database.GetNodes(this.Id);
+            foreach (Node n in list)
+                n._database = this._database;
+
+            return list;
+        }
 
         public override bool CanHaveChild()
         {
-            if (Children != null)
+            if (Children.Count > 0)
                 return false;
             else
                 return true;
         }
     }
+
+    //public class SingleChildrenNode : Node
+    //{
+    //    public SingleChildrenNode(IDatabase database)
+    //        : base(database)
+    //    {
+    //        Icon = @"Icons\SingleChildrenNode.jpg";
+    //        _Children = LoadChildren();
+    //        properties = new SingleChildrenNodeProperties();
+    //    }
+
+    //    public INode Children
+    //    {
+    //        get { return _Children; }
+    //    }
+
+    //    private readonly INode _Children;
+
+    //    private INode LoadChildren()
+    //    {
+    //        if (_database == null)
+    //            return this;
+
+    //        var child = _database.GetNodes(this.Id);
+
+    //        return child.FirstOrDefault();
+    //    }
+
+    //    public override bool CanHaveChild()
+    //    {
+    //        if (Children != null)
+    //            return false;
+    //        else
+    //            return true;
+    //    }
+    //}
 
     public class NullChildrenNode : Node
     {

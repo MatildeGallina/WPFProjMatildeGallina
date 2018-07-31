@@ -160,7 +160,7 @@
                     Name="SelectedItemButtons" Visibility="Hidden"
                     Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Name="AddNewChild" Content="Add child"
-                    IsEnabled="False"
+                    Visibility="Hidden"
                     Click="AddNewChild_Click"/>
             <Button Name="AlterProperties" Content="Set properties"
                     Click="AlterProperties_Click"/>

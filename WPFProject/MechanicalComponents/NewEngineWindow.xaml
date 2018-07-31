@@ -52,43 +52,21 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0">
                     <Label Content="Name"/>
                     <TextBox Name="EngineName"/>
                 </StackPanel>
-                
+
                 <StackPanel Grid.Row="1">
                     <Label Content="SerialCode"/>
                     <TextBox Name="EngineSerialCode"/>
                 </StackPanel>
-
-                <StackPanel Grid.Row="2">
-                    <ListBox Grid.Column="0"
-                             Name="ChildrenListBox">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type local:NodeModel}">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Name}"/>
-                                    <Button Name="RemoveChild"
-                                            Content="Remove"
-                                            Click="Remove_Click"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </StackPanel>
             </Grid>
         </StackPanel>
-        
+
         <StackPanel Grid.Column="1">
-            <Button Name="AddChild" Content="Add child"
-                    Click="AddChild_Click"/>
-            <Button Name="SetProperties" Content="Set Properties"
-                    Click="SetProperties_Click"/>
             <Button Name="Save" Content="Save"
                     Click="Save_Click"/>
             <Button Name="Undo" Content="Undo"

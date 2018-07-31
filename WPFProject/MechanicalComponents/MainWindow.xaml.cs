@@ -75,6 +75,7 @@ namespace MechanicalComponents
             INode selectedNode = (INode)EnginesTreeView.SelectedItem;
 
             _database.UpdateParentId(newChild.Id, selectedNode.Id);
+            InitializeTreeview();
         }
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
@@ -93,7 +94,7 @@ namespace MechanicalComponents
             // riassegrare i valori inviati dalla setPropertyWindow all'item selezionato
             // forse serve aggiornare
 
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
         
         private void VisibilitySpecifications(INode selectedNode)
@@ -121,7 +122,10 @@ namespace MechanicalComponents
                     throw new NullReferenceException("Unknown type");
             }
 
-            AddNewChild.IsEnabled = selectedNode.CanHaveChild();
+            if (selectedNode.CanHaveChild())
+                AddNewChild.Visibility = Visibility.Visible;
+            else
+                AddNewChild.Visibility = Visibility.Hidden;
             Refresh.IsEnabled = true;
 
             Informations.Visibility = Visibility.Visible;
