@@ -113,6 +113,8 @@ namespace MechanicalComponents.Models
                     UpdateParentId(child.Id, node.Id);
                 }
             }
+
+            //  switch se è un single node gli setto la proprietà children con quel valore
         }
         
         public void DeleteNode(int id)
