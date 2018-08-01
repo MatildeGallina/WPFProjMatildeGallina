@@ -133,25 +133,35 @@ namespace MechanicalComponents
             Informations.Visibility = Visibility.Visible;
 
             SelectedItemButtons.Visibility = Visibility.Visible;
+
+            ShowPropertiesValues(selectedNode);
         }
 
         private void ShowPropertiesValues(INode selectedNode)
-        {
-            NodeBrand.Text = selectedNode.properties.Brand;
-            NodeModel.Text = selectedNode.properties.Model;
-            NodePrice.Text = selectedNode.properties.Price.ToString();
-            
+        {            
             switch (RetriveCastedNode().GetType().Name)
             {
                 case "MultiChildrenNode":
-                    Maintenance.Text = selectedNode.properties.FreeMaintenance.ToString();
+                    var multiNode = (MultiChildrenNode)selectedNode;
+                    NodeBrand.Text = multiNode.properties.Brand;
+                    NodeModel.Text = multiNode.properties.Model;
+                    NodePrice.Text = multiNode.properties.Price.ToString();
+                    Maintenance.Text = multiNode.properties.FreeMaintenance.ToString();
                     break;
                 case "SingleChildrenNode":
-                    Warranty.Text = selectedNode.properties.WarrantyPeriod.ToString();
+                    var singleNode = (SingleChildrenNode)selectedNode;
+                    NodeBrand.Text = singleNode.properties.Brand;
+                    NodeModel.Text = singleNode.properties.Model;
+                    NodePrice.Text = singleNode.properties.Price.ToString();
+                    Warranty.Text = singleNode.properties.WarrantyPeriod.ToString();
                     break;
                 case "NullChildrenNode":
-                    Material.Text = selectedNode.properties.Material;
-                    Year.Text = selectedNode.properties.Year.ToString();
+                    var nullNode = (NullChildrenNode)selectedNode;
+                    NodeBrand.Text = nullNode.properties.Brand;
+                    NodeModel.Text = nullNode.properties.Model;
+                    NodePrice.Text = nullNode.properties.Price.ToString();
+                    Material.Text = nullNode.properties.Material;
+                    Year.Text = nullNode.properties.Year.ToString();
                     break;
                 default:
                     throw new NullReferenceException("Unknown type");

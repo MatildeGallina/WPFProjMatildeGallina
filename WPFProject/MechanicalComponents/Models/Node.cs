@@ -22,7 +22,7 @@ namespace MechanicalComponents.Models
         public int? ParentId { get; set; }
         public string Icon { get; set; }
 
-        public IProperties properties { get; set; }
+        //public IProperties properties { get; set; }
 
         public IDatabase _database;
 
@@ -46,11 +46,11 @@ namespace MechanicalComponents.Models
             _Children = new Lazy<List<INode>>(LoadChildren);
             properties = new MultiChildrenNodeProperties();
         }
+        public MultiChildrenNodeProperties properties { get; set; }
 
         public List<INode> Children
         {
             get { return _Children.Value; }
-            
         }
 
         private readonly Lazy<List<INode>> _Children;
@@ -86,6 +86,7 @@ namespace MechanicalComponents.Models
             properties = new SingleChildrenNodeProperties();
         }
 
+        public SingleChildrenNodeProperties properties { get; set; }
         //public List<INode> Children
         //{
         //    get { return _Children.Value; }
@@ -177,6 +178,8 @@ namespace MechanicalComponents.Models
             Icon = @"Icons\NullChildrenNode.jpg";
             properties = new NullChildrenNodeProperties();
         }
+
+        public NullChildrenNodeProperties properties { get; set; }
 
         public override bool CanHaveChild()
         {

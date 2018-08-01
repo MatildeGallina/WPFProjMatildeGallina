@@ -68,9 +68,22 @@ namespace MechanicalComponents.Models
             }
         }
 
-        public void GetProperties(int id)
+        public INode GetProperties(INode node)
         {
-            throw new NotImplementedException();
+            using (var conn = this.CreateConnection())
+            using (var comm = conn.CreateCommand())
+            {
+                conn.Open();
+
+                comm.CommandType = CommandType.Text;
+                comm.CommandText = _queryWriter.GetProperties(node);
+
+                var reader = comm.ExecuteReader();
+                reader.Read();
+                node = AddPropertiesToNode(reader, node);
+
+                return node;
+            }
         }
 
         public List<string> GetSerialCodes()
@@ -144,7 +157,7 @@ namespace MechanicalComponents.Models
             }
         }
 
-        public void UpdateProperties(int id)
+        public void UpdateProperties(INode node)
         {
             using (var conn = this.CreateConnection())
             using (var comm = conn.CreateCommand())
@@ -152,11 +165,12 @@ namespace MechanicalComponents.Models
                 conn.Open();
 
                 comm.CommandType = CommandType.Text;
-                comm.CommandText = _queryWriter.UpdateProperties(id);
+                comm.CommandText = _queryWriter.UpdateProperties(node);
 
                 comm.ExecuteNonQuery();
             }
         }
+        
         #region SetChildToSingleNode()
         //private void SetChildToSingleChildrenNode(int id, SingleChildrenNode parentNode)
         //{
@@ -177,20 +191,25 @@ namespace MechanicalComponents.Models
         //}
         #endregion
 
-        private static void UpdateList(SqlCommand comm, List<INode> nodes)
+        private void UpdateList(SqlCommand comm, List<INode> nodes)
         {
             using (var reader = comm.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    INode node = AddValuesToNode(reader);
+                    var node = AddPropertiesToNode(reader, AddValuesToNode(reader));
 
                     nodes.Add(node);
+                }
+
+                foreach(var n in nodes)
+                {
+                    
                 }
             }
         }
 
-        private static INode AddValuesToNode(SqlDataReader reader)
+        internal static INode AddValuesToNode(SqlDataReader reader)
         {
             var node = CreateNode(reader);
             node.Id = (int)reader["Id"];
@@ -212,6 +231,101 @@ namespace MechanicalComponents.Models
                 default:
                     throw new ArgumentException("Node type not found");
             }
+        }
+
+        internal INode AddPropertiesToNode(SqlDataReader reader, INode node)
+        {
+            var nodeType = node.GetType().Name;
+            switch (nodeType)
+            {
+                case "MultiChildrenNode":
+                    ReaderPropertiesOnMultiChildrenNode((MultiChildrenNode)node, reader);
+                    break;
+                case "SingleChildrenNode":
+                    ReaderPropertiesOnSingleChildrenNode((SingleChildrenNode)node, reader);
+                    break;
+                case "NullChildrenNode":
+                    ReaderPropertiesOnNullChildrenNode((NullChildrenNode)node, reader);
+                    break;
+                default:
+                    throw new ArgumentException("Type not found");
+            }
+
+            return node;
+        }
+
+        private void ReaderPropertiesOnMultiChildrenNode(MultiChildrenNode node, SqlDataReader reader)
+        {
+            if (reader["Brand"] == DBNull.Value)
+                node.properties.Brand = null;
+            else
+                node.properties.Brand = (string)reader["Brand"];
+
+            if (reader["Model"] == DBNull.Value)
+                node.properties.Model = null;
+            else
+                node.properties.Model = (string)reader["Model"];
+
+            if (reader["Price"] == DBNull.Value)
+                node.properties.Price = null;
+            else
+                node.properties.Price = (decimal?)reader["Price"];
+
+            if (reader["FreeMaintenance"] == DBNull.Value)
+                node.properties.FreeMaintenance = null;
+            else
+                node.properties.FreeMaintenance = (int?)reader["FreeMaintenance"];
+        }
+
+        private void ReaderPropertiesOnSingleChildrenNode(SingleChildrenNode node, SqlDataReader reader)
+        {
+            if (reader["Brand"] == DBNull.Value)
+                node.properties.Brand = null;
+            else
+                node.properties.Brand = (string)reader["Brand"];
+
+            if (reader["Model"] == DBNull.Value)
+                node.properties.Model = null;
+            else
+                node.properties.Model = (string)reader["Model"];
+
+            if (reader["Price"] == DBNull.Value)
+                node.properties.Price = null;
+            else
+                node.properties.Price = (decimal?)reader["Price"];
+
+            if (reader["WarrantyPeriod"] == DBNull.Value)
+                node.properties.WarrantyPeriod = null;
+            else
+                node.properties.WarrantyPeriod = (int?)reader["WarrantyPeriod"];
+        }
+
+        private void ReaderPropertiesOnNullChildrenNode(NullChildrenNode node, SqlDataReader reader)
+        {
+            if (reader["Brand"] == DBNull.Value)
+                node.properties.Brand = null;
+            else
+                node.properties.Brand = (string)reader["Brand"];
+
+            if (reader["Model"] == DBNull.Value)
+                node.properties.Model = null;
+            else
+                node.properties.Model = (string)reader["Model"];
+
+            if (reader["Price"] == DBNull.Value)
+                node.properties.Price = null;
+            else
+                node.properties.Price = (decimal?)reader["Price"];
+
+            if (reader["Material"] == DBNull.Value)
+                node.properties.Material = "";
+            else
+                node.properties.Material = (string)reader["Material"];
+
+            if (reader["Year"] == DBNull.Value)
+                node.properties.Year = null;
+            else
+                node.properties.Year = (int?)reader["Year"];
         }
     }
 }

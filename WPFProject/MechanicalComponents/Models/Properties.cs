@@ -11,10 +11,6 @@ namespace MechanicalComponents.Models
         string Brand { get; }
         string Model { get; }
         decimal? Price { get; }
-        int? FreeMaintenance { get; }
-        int? WarrantyPeriod { get; }
-        string Material { get; }
-        int? Year { get; }
 
         bool Savable { get; set; }
     }
@@ -31,10 +27,6 @@ namespace MechanicalComponents.Models
         public decimal? Price { get; set; }
         public int? FreeMaintenance { get; set; }
         public bool Savable { get; set; }
-
-        public int? WarrantyPeriod { get; }
-        public string Material { get; }
-        public int? Year { get; }
     }
 
     public class SingleChildrenNodeProperties : IProperties
@@ -49,10 +41,6 @@ namespace MechanicalComponents.Models
         public decimal? Price { get; set; }
         public int? WarrantyPeriod { get; set; }
         public bool Savable { get; set; }
-
-        public int? FreeMaintenance { get; }
-        public string Material { get; }
-        public int? Year { get; }
     }
 
     public class NullChildrenNodeProperties : IProperties
@@ -68,8 +56,5 @@ namespace MechanicalComponents.Models
         public string Material { get; set; }
         public int? Year { get; set; }
         public bool Savable { get; set; }
-
-        public int? FreeMaintenance { get; }
-        public int? WarrantyPeriod { get; }
     }
 }

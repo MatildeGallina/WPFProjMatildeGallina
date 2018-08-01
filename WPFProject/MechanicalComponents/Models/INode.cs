@@ -14,7 +14,7 @@ namespace MechanicalComponents.Models
         int? ParentId { get; set; }
         string Icon { get; set; }
         
-        IProperties properties { get; set; }
+        //IProperties properties { get; set; }
         
         void AddChild(NodeModel child);
         bool CanHaveChild();

@@ -27,9 +27,26 @@ namespace MechanicalComponents.Models
                 $"where Id = {id}";
         }
 
-        public string GetProperties(int id)
+        public string GetProperties(INode node)
         {
-            throw new NotImplementedException();
+            var nodeType = node.GetType().Name;
+            switch (nodeType)
+            {
+                case "MultiChildrenNode":
+                    return $"select Brand, Model, Price, FreeMaintenance " +
+                        $"from Nodes " +
+                        $"where Id = ${node.Id}";
+                case "SingleChildrenNode":
+                    return $"select Brand, Model, Price, WarrantyPeriod " +
+                        $"from Nodes " +
+                        $"where Id = ${node.Id}";
+                case "NullChildrenNode":
+                    return $"select Brand, Model, Price, Material, Year " +
+                        $"from Nodes " +
+                        $"where Id = ${node.Id}";
+                default:
+                    throw new ArgumentException("Type not found");
+            }
         }
 
         public string GetSerialCodes()
@@ -66,9 +83,63 @@ namespace MechanicalComponents.Models
                 $"where Id = {id}";
         }
 
-        public string UpdateProperties(int id)
+        public string UpdateProperties(INode node)
         {
-            throw new NotImplementedException();
+            var nodeType = node.GetType().Name;
+            switch (nodeType)
+            {
+                case "MultiChildrenNode":
+                    var multiNode = (MultiChildrenNode)node;
+                    return "update Nodes " +
+                        $"set Brand = '{IsStringEmprty(multiNode.properties.Brand)}', " +
+                        $"Model = '{IsStringEmprty(multiNode.properties.Model)}', " +
+                        $"Price = {IsDecimalNullValue(multiNode.properties.Price)}, " +
+                        $"FreeMaintenance = {IsIntNullValue(multiNode.properties.FreeMaintenance)} " +
+                        $"where Id = {multiNode.Id}";
+                case "SingleChildrenNode":
+                    var singleNode = (SingleChildrenNode)node;
+                    return "update Nodes " +
+                        $"set Brand = '{IsStringEmprty(singleNode.properties.Brand)}', " +
+                        $"Model = '{(singleNode.properties.Model)}', " +
+                        $"Price = {IsDecimalNullValue(singleNode.properties.Price)}, " +
+                        $"WarrantyPeriod = {IsIntNullValue(singleNode.properties.WarrantyPeriod)} " +
+                        $"where Id = {singleNode.Id}";
+                case "NullChildrenNode":
+                    var nullNode = (NullChildrenNode)node;
+                    return "update Nodes " +
+                        $"set Brand = '{IsStringEmprty(nullNode.properties.Brand)}', " +
+                        $"Model = '{IsStringEmprty(nullNode.properties.Model)}', " +
+                        $"Price = {IsDecimalNullValue(nullNode.properties.Price)}, " +
+                        $"Material = {IsStringEmprty(nullNode.properties.Material)}, " +
+                        $"Year = {IsIntNullValue(nullNode.properties.Year)} " +
+                        $"where Id = {nullNode.Id}";
+                default:
+                    throw new ArgumentException("Type not found");
+            }
+        }
+
+        private string IsIntNullValue(int? i)
+        {
+            if (i == null)
+                return "NULL";
+
+            return i.ToString();
+        }
+
+        private string IsDecimalNullValue(decimal? d)
+        {
+            if (d == null)
+                return "NULL";
+
+            return d.ToString();
+        }
+
+        private string IsStringEmprty(string s)
+        {
+            if (string.IsNullOrWhiteSpace(s))
+                return "NULL";
+
+            return s;
         }
     }
 }
