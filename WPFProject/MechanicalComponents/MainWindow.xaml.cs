@@ -48,7 +48,7 @@ namespace MechanicalComponents
 
         private void EnginesTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            INode selectedNode = (INode)EnginesTreeView.SelectedItem;
+            var selectedNode = RetriveCastedNode();
 
             VisibilitySpecifications(selectedNode);
             
@@ -72,15 +72,17 @@ namespace MechanicalComponents
             childWindow.ShowDialog();
             
             var newChild = childWindow.child;
-            INode selectedNode = (INode)EnginesTreeView.SelectedItem;
+            //INode selectedNode = (INode)EnginesTreeView.SelectedItem;
+
+            var selectedNode = RetriveCastedNode(); 
 
             _database.UpdateParentId(newChild.Id, selectedNode.Id);
-            InitializeTreeview();
+            VisibilitySpecifications(selectedNode);
         }
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
-            INode selectedNode = (INode)EnginesTreeView.SelectedItem;
+            var selectedNode = RetriveCastedNode();
             // come fare il refresh di un ramo del treeview
 
             throw new NotImplementedException();
@@ -88,7 +90,7 @@ namespace MechanicalComponents
 
         private void AlterProperties_Click(object sender, RoutedEventArgs e)
         {
-            SetPropertiesWindow setProperties = new SetPropertiesWindow((INode)EnginesTreeView.SelectedItem);
+            SetPropertiesWindow setProperties = new SetPropertiesWindow(RetriveCastedNode());
             setProperties.ShowDialog();
 
             // riassegrare i valori inviati dalla setPropertyWindow all'item selezionato
@@ -101,19 +103,19 @@ namespace MechanicalComponents
         {
             CommonProperites.Visibility = Visibility.Visible;
 
-            switch (selectedNode.GetType().ToString())
+            switch (RetriveCastedNode().GetType().Name)
             {
-                case "MechanicalComponents.Models.MultiChildrenNode" :
+                case "MultiChildrenNode" :
                     MultiChildrenNodeProperties.Visibility = Visibility.Visible;
                     SingleChildrenNodeProperties.Visibility = Visibility.Hidden;
                     NullChildrenNodeProperties.Visibility = Visibility.Hidden;
                     break;
-                case "MechanicalComponents.Models.SingleChildrenNode":
+                case "SingleChildrenNode":
                     MultiChildrenNodeProperties.Visibility = Visibility.Hidden;
                     SingleChildrenNodeProperties.Visibility = Visibility.Visible;
                     NullChildrenNodeProperties.Visibility = Visibility.Hidden;
                     break;
-                case "MechanicalComponents.Models.NullChildrenNode":
+                case "NullChildrenNode":
                     MultiChildrenNodeProperties.Visibility = Visibility.Hidden;
                     SingleChildrenNodeProperties.Visibility = Visibility.Hidden;
                     NullChildrenNodeProperties.Visibility = Visibility.Visible;
@@ -138,20 +140,37 @@ namespace MechanicalComponents
             NodeBrand.Text = selectedNode.properties.Brand;
             NodeModel.Text = selectedNode.properties.Model;
             NodePrice.Text = selectedNode.properties.Price.ToString();
-            switch (selectedNode.GetType().ToString())
+            
+            switch (RetriveCastedNode().GetType().Name)
             {
-                case "MechanicalComponents.Models.MultiChildrenNode":
+                case "MultiChildrenNode":
                     Maintenance.Text = selectedNode.properties.FreeMaintenance.ToString();
                     break;
-                case "MechanicalComponents.Models.SingleChildrenNode":
+                case "SingleChildrenNode":
                     Warranty.Text = selectedNode.properties.WarrantyPeriod.ToString();
                     break;
-                case "MechanicalComponents.Models.NullChildrenNode":
+                case "NullChildrenNode":
                     Material.Text = selectedNode.properties.Material;
                     Year.Text = selectedNode.properties.Year.ToString();
                     break;
                 default:
                     throw new NullReferenceException("Unknown type");
+            }
+        }
+
+        private INode RetriveCastedNode()
+        {
+            var nodeType = EnginesTreeView.SelectedItem.GetType().Name;
+            switch (nodeType)
+            {
+                case "MultiChildrenNode":
+                    return (MultiChildrenNode)EnginesTreeView.SelectedItem;
+                case "SingleChildrenNode":
+                    return (SingleChildrenNode)EnginesTreeView.SelectedItem;
+                case "NullChildrenNode":
+                    return (NullChildrenNode)EnginesTreeView.SelectedItem;
+                default:
+                    throw new ArgumentException("Type not found");
             }
         }
     }

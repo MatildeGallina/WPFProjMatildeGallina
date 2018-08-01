@@ -157,7 +157,7 @@ namespace MechanicalComponents.Models
                 comm.ExecuteNonQuery();
             }
         }
-
+        #region SetChildToSingleNode()
         //private void SetChildToSingleChildrenNode(int id, SingleChildrenNode parentNode)
         //{
         //    using (var conn = this.CreateConnection())
@@ -175,6 +175,7 @@ namespace MechanicalComponents.Models
         //        parentNode.Children = node;
         //    }
         //}
+        #endregion
 
         private static void UpdateList(SqlCommand comm, List<INode> nodes)
         {

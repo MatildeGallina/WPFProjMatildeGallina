@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -49,6 +50,7 @@ namespace MechanicalComponents.Models
         public List<INode> Children
         {
             get { return _Children.Value; }
+            
         }
 
         private readonly Lazy<List<INode>> _Children;
@@ -73,35 +75,58 @@ namespace MechanicalComponents.Models
         }
     }
 
-    public class SingleChildrenNode : Node
+    public class SingleChildrenNode : Node, INotifyPropertyChanged
     {
         public SingleChildrenNode(IDatabase database)
             : base(database)
         {
             Icon = @"Icons\SingleChildrenNode.jpg";
-            _Children = _Children = new Lazy<List<INode>>(LoadChildren);
+            _Children = new Lazy<INode>(LoadChildren);
+            //_Children = LoadChildren();
             properties = new SingleChildrenNodeProperties();
         }
 
-        public List<INode> Children
+        //public List<INode> Children
+        //{
+        //    get { return _Children.Value; }
+        //}
+
+        //private readonly Lazy<List<INode>> _Children;
+
+        //public List<INode> LoadChildren()
+        //{
+        //    var list = _database.GetNodes(this.Id);
+        //    foreach (Node n in list)
+        //        n._database = this._database;
+
+        //    return list;
+        //}
+
+        #region prop Children is not a list
+        public INode Children
         {
             get { return _Children.Value; }
         }
 
-        private readonly Lazy<List<INode>> _Children;
+        private readonly Lazy<INode> _Children;
 
-        public List<INode> LoadChildren()
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public INode LoadChildren()
         {
             var list = _database.GetNodes(this.Id);
             foreach (Node n in list)
                 n._database = this._database;
 
-            return list;
+            return list.FirstOrDefault();
         }
+        #endregion
 
         public override bool CanHaveChild()
         {
-            if (Children.Count > 0)
+            //if (LoadChildren().Count > 0)
+            //    return false;
+            if (LoadChildren() != null)
                 return false;
             else
                 return true;
