@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MechanicalComponents.Models;
 using System.Data.SqlClient;
 using System.Data;
+using System.IO;
 
 namespace MechanicalComponents.Test
 {
@@ -12,7 +13,7 @@ namespace MechanicalComponents.Test
         Database newDatabase()
         {
             Database database = new Database();
-            database.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MockMechanicalComponentsDatabase;");
+            database.SetConnectionString(File.ReadAllText("DatabaseConnectionString.txt"));
             return database;
         }
             
@@ -40,6 +41,9 @@ namespace MechanicalComponents.Test
         [TestMethod]
         public void SingleChildNode_can_have_child()
         {
+            var db = newDatabase();
+            db.DeleteNodeByParentId(4);
+
             var scn = new SingleChildrenNode(newDatabase())
             {
                 Id = 4
@@ -61,6 +65,8 @@ namespace MechanicalComponents.Test
 
             var child2 = new NodeModel("child 2", "5678BB5678", "SingleChildrenNode");
             scn.AddChild(child2);
+
+
         }
 
         [TestMethod]

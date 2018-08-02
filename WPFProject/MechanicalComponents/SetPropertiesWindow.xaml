@@ -60,18 +60,19 @@
             </StackPanel>
         </StackPanel>
         <StackPanel Grid.Column="0" Grid.Row="1"
-                    Name="MultiChildrenNode" Visibility="Hidden">
+                    Name="MultiChildrenNode" Visibility="Hidden"
+                    Margin="10">
             <Label Content="Free Maintenance (years)"/>
             <TextBox Name="Maintenance"/>
         </StackPanel>
         <StackPanel Grid.Column="0" Grid.Row="1"
-                    Name="SingleChildrenNode" Visibility="Hidden">
+                    Name="SingleChildrenNode" Visibility="Hidden"
+                    Margin="10">
             <Label Content="Warranty Period (days)"/>
             <TextBox Name="Warranty"/>
         </StackPanel>
         <StackPanel Grid.Column="0" Grid.Row="1"
-                    Name="NullChildrenNode" Visibility="Hidden" Orientation="Horizontal"
-                    Margin="0">
+                    Name="NullChildrenNode" Visibility="Hidden" Orientation="Horizontal">
             <StackPanel>
                 <Label Content="Material"/>
                 <TextBox Name="Material"/>

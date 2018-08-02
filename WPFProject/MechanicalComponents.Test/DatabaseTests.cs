@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MechanicalComponents.Models;
 using System.Data.SqlClient;
 using System.Data;
+using System.IO;
 
 namespace MechanicalComponents.Test
 {
@@ -10,10 +11,10 @@ namespace MechanicalComponents.Test
     public class DatabaseTests
     {
         [TestMethod]
-        public void GetNode_with_rigth_connection_string()
+        public void GetNode_with_right_connection_string()
         {
             Database database = new Database();
-            database.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MockMechanicalComponentsDatabase;");
+            database.SetConnectionString(File.ReadAllText("DatabaseConnectionString.txt"));
             database.GetNodes(1);
         }
 
@@ -45,7 +46,7 @@ namespace MechanicalComponents.Test
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void GetNode_with_wrong_connection_string()
         {
             Database database = new Database();
@@ -57,7 +58,7 @@ namespace MechanicalComponents.Test
         public void GetNodes_update_database_list()
         {
             Database database = new Database();
-            database.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MockMechanicalComponentsDatabase;");
+            database.SetConnectionString(File.ReadAllText("DatabaseConnectionString.txt"));
             var engines = database.GetNodes(null);
 
             Assert.AreEqual(3, engines.Count);
@@ -67,7 +68,7 @@ namespace MechanicalComponents.Test
         public void GetNodes_charge_rigth_values()
         {
             Database database = new Database();
-            database.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MockMechanicalComponentsDatabase;");
+            database.SetConnectionString(File.ReadAllText("DatabaseConnectionString.txt"));
             var engines = database.GetNodes(null);
 
             Assert.AreEqual(1, engines[0].Id);
@@ -82,7 +83,7 @@ namespace MechanicalComponents.Test
             var mockNode = new NodeModel("mockNode", "00001111AB", "SingleChildrenNode");
 
             Database database = new Database();
-            database.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MockMechanicalComponentsDatabase;");
+            database.SetConnectionString(File.ReadAllText("DatabaseConnectionString.txt"));
             database.SetNode(mockNode, null);
 
             var node = database.GetNodeById(mockNode.Id);

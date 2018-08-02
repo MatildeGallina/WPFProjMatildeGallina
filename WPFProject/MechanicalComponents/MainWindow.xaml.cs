@@ -73,7 +73,6 @@ namespace MechanicalComponents
             childWindow.ShowDialog();
             
             var newChild = childWindow.child;
-            //INode selectedNode = (INode)EnginesTreeView.SelectedItem;
 
             var selectedNode = RetriveCastedNode(); 
 
@@ -83,39 +82,15 @@ namespace MechanicalComponents
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
-            var selectedNode = RetriveCastedNode();
-            // come fare il refresh di un ramo del treeview
-
-            switch (RetriveCastedNode().GetType().Name)
-            {
-                case "MultiChildrenNode":
-                    var multiNode = (MultiChildrenNode)EnginesTreeView.SelectedItem;
-                    var refreshedChildren = _database.GetNodes(multiNode.Id);
-                    foreach (Node c in refreshedChildren)
-                        c._database = _database;
-                    multiNode.Children = new ObservableCollection<INode>(refreshedChildren);
-                    break;
-                case "SingleChildrenNode":
-                    var singleNode = (SingleChildrenNode)EnginesTreeView.SelectedItem;
-                    var refreshedChild = _database.GetNodes(singleNode.Id);
-                    foreach (Node c in refreshedChild)
-                        c._database = _database;
-                    singleNode.Children = new ObservableCollection<INode>(refreshedChild);
-                    break;
-                default:
-                    break;
-            }
-            
-            
             InitializeTreeview();
-
-            //throw new NotImplementedException();
         }
 
         private void AlterProperties_Click(object sender, RoutedEventArgs e)
         {
             SetPropertiesWindow setProperties = new SetPropertiesWindow(RetriveCastedNode());
             setProperties.ShowDialog();
+
+            ShowPropertiesValues((INode)EnginesTreeView.SelectedItem);
         }
         
         private void VisibilitySpecifications(INode selectedNode)
@@ -147,6 +122,7 @@ namespace MechanicalComponents
                 AddNewChild.Visibility = Visibility.Visible;
             else
                 AddNewChild.Visibility = Visibility.Hidden;
+
             Refresh.IsEnabled = true;
 
             Informations.Visibility = Visibility.Visible;

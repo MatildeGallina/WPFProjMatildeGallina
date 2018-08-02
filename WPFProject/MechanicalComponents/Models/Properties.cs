@@ -10,51 +10,40 @@ namespace MechanicalComponents.Models
     {
         string Brand { get; }
         string Model { get; }
-        decimal? Price { get; }
-
-        bool Savable { get; set; }
+        double? Price { get; }
     }
 
     public class MultiChildrenNodeProperties : IProperties
     {
         public MultiChildrenNodeProperties()
-        {
-            Savable = false;
-        }
+        { }
 
         public string Brand { get; set; }
         public string Model { get; set; }
-        public decimal? Price { get; set; }
+        public double? Price { get; set; }
         public int? FreeMaintenance { get; set; }
-        public bool Savable { get; set; }
     }
 
     public class SingleChildrenNodeProperties : IProperties
     {
         public SingleChildrenNodeProperties()
-        {
-            Savable = false;
-        }
+        { }
 
         public string Brand { get; set; }
         public string Model { get; set; }
-        public decimal? Price { get; set; }
+        public double? Price { get; set; }
         public int? WarrantyPeriod { get; set; }
-        public bool Savable { get; set; }
     }
 
     public class NullChildrenNodeProperties : IProperties
     {
         public NullChildrenNodeProperties()
-        {
-            Savable = false;
-        }
+        { }
 
         public string Brand { get; set; }
         public string Model { get; set; }
-        public decimal? Price { get; set; }
+        public double? Price { get; set; }
         public string Material { get; set; }
         public int? Year { get; set; }
-        public bool Savable { get; set; }
     }
 }

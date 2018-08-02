@@ -10,9 +10,9 @@ namespace MechanicalComponents.Models
     {
         string GetByParentId(int? ParentId);
         string GetById(int Id);
+        string GetProperties(INode node);
         string GetSerialCodes();
         string SetNode(NodeModel n, int? ParentId);
-        string GetProperties(INode node);
         string DeleteById(int Id);
         string UpdateParentId(int id, int parentId);
         string UpdateProperties(INode node);

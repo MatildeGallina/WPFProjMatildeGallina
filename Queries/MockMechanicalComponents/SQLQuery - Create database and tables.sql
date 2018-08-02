@@ -1,3 +1,7 @@
+drop table Nodes
+drop database MockMechanicalComponentsDatabase
+
+
 create database MockMechanicalComponentsDatabase
 go
 
@@ -19,18 +23,3 @@ create table Nodes
 	Material nvarchar(max),
 	Year int
 )
-
-select * from Nodes
-
-drop table Nodes
-drop database MockMechanicalComponents
-
-UPDATE Nodes
-SET Brand = 'Mercedes'
-WHERE Id = 1
-
-update Nodes
-set Brand = 'Fiat', Model = 'Punto', FreeMaintenance = 1
-where Id = 2
-
-select Brand, Model from Nodes where Id = 1

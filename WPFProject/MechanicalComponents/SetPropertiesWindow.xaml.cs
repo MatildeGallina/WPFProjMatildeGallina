@@ -89,7 +89,6 @@ namespace MechanicalComponents
 
         private void SaveNewChild_Click(object sender, RoutedEventArgs e)
         {
-            // riassegnare i valori al nodo
             switch (node.GetType().Name)
             {
                 case "MultiChildrenNode" :
@@ -99,7 +98,7 @@ namespace MechanicalComponents
                     multiNode.properties.Brand = NodeBrand.Text;
                     multiNode.properties.Model = NodeModel.Text;
 
-                    if (NodePrice.Text.Length > 0 && decimal.TryParse(NodePrice.Text, out decimal mPrice))
+                    if (NodePrice.Text.Length > 0 && double.TryParse(NodePrice.Text, out double mPrice))
                         multiNode.properties.Price = mPrice;
 
                     if (Maintenance.Text.Length > 0 && int.TryParse(Maintenance.Text, out int maintenance))
@@ -115,7 +114,7 @@ namespace MechanicalComponents
                     singleNode.properties.Brand = NodeBrand.Text;
                     singleNode.properties.Model = NodeModel.Text;
 
-                    if (NodePrice.Text.Length > 0 && decimal.TryParse(NodePrice.Text, out decimal sPrice))
+                    if (NodePrice.Text.Length > 0 && double.TryParse(NodePrice.Text, out double sPrice))
                         singleNode.properties.Price = sPrice;
 
                     if (Maintenance.Text.Length > 0 && int.TryParse(Warranty.Text, out int warranty))
@@ -131,7 +130,7 @@ namespace MechanicalComponents
                     nullNode.properties.Brand = NodeBrand.Text;
                     nullNode.properties.Model = NodeModel.Text;
 
-                    if (NodePrice.Text.Length > 0 && decimal.TryParse(NodePrice.Text, out decimal nPrice))
+                    if (NodePrice.Text.Length > 0 && double.TryParse(NodePrice.Text, out double nPrice))
                         nullNode.properties.Price = nPrice;
 
                     nullNode.properties.Material = Material.Text;
@@ -145,7 +144,7 @@ namespace MechanicalComponents
                 default:
                     throw new ArgumentException("Unknown type!");
             }
-            // chiamare il database che salvi dandogli il nodo
+
             Cleaning();
             this.Close();
         }

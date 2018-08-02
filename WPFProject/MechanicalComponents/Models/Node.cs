@@ -22,8 +22,6 @@ namespace MechanicalComponents.Models
         public int? ParentId { get; set; }
         public string Icon { get; set; }
 
-        //public IProperties properties { get; set; }
-
         public IDatabase _database;
 
         public void AddChild(NodeModel child)
@@ -78,35 +76,18 @@ namespace MechanicalComponents.Models
         }
     }
 
-    public class SingleChildrenNode : Node, INotifyPropertyChanged
+    public class SingleChildrenNode : Node
     {
         public SingleChildrenNode(IDatabase database)
             : base(database)
         {
             Icon = @"Icons\SingleChildrenNode.jpg";
             _Children = new Lazy<ObservableCollection<INode>>(LoadChildren);
-            //_Children = LoadChildren();
             properties = new SingleChildrenNodeProperties();
         }
 
         public SingleChildrenNodeProperties properties { get; set; }
-        //public List<INode> Children
-        //{
-        //    get { return _Children.Value; }
-        //}
-
-        //private readonly Lazy<List<INode>> _Children;
-
-        //public List<INode> LoadChildren()
-        //{
-        //    var list = _database.GetNodes(this.Id);
-        //    foreach (Node n in list)
-        //        n._database = this._database;
-
-        //    return list;
-        //}
-
-        #region prop Children is not a list
+        
         public ObservableCollection<INode> Children
         {
             get { return _Children.Value; }
@@ -114,8 +95,6 @@ namespace MechanicalComponents.Models
         }
 
         private readonly Lazy<ObservableCollection<INode>> _Children;
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public ObservableCollection<INode> LoadChildren()
         {
@@ -127,54 +106,15 @@ namespace MechanicalComponents.Models
 
             return oc;
         }
-        #endregion
 
         public override bool CanHaveChild()
         {
-            //if (LoadChildren().Count > 0)
-            //    return false;
             if (LoadChildren().Count > 0)
                 return false;
             else
                 return true;
         }
     }
-
-    //public class SingleChildrenNode : Node
-    //{
-    //    public SingleChildrenNode(IDatabase database)
-    //        : base(database)
-    //    {
-    //        Icon = @"Icons\SingleChildrenNode.jpg";
-    //        _Children = LoadChildren();
-    //        properties = new SingleChildrenNodeProperties();
-    //    }
-
-    //    public INode Children
-    //    {
-    //        get { return _Children; }
-    //    }
-
-    //    private readonly INode _Children;
-
-    //    private INode LoadChildren()
-    //    {
-    //        if (_database == null)
-    //            return this;
-
-    //        var child = _database.GetNodes(this.Id);
-
-    //        return child.FirstOrDefault();
-    //    }
-
-    //    public override bool CanHaveChild()
-    //    {
-    //        if (Children != null)
-    //            return false;
-    //        else
-    //            return true;
-    //    }
-    //}
 
     public class NullChildrenNode : Node
     {

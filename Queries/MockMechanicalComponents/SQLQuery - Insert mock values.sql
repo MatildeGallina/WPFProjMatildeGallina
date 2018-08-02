@@ -31,38 +31,3 @@ insert into Nodes
 values
 ('Gruppo termico', 'AAA222333B', 1, 'NullChildrenNode')
 
---insert into Nodes
---(Name, SerialCode, ParentId, Type)
---values
---('Spinotto', 'BBB000111C', 2, '')
-
---insert into Nodes
---(Name, SerialCode, ParentId, Type)
---values
---('Monoblocco', 'BBB111222C', 2, '')
-
---insert into Nodes
---(Name, SerialCode, ParentId, Type)
---values
---('iniettore', 'CCC000111D', 3, '')
-
---insert into Nodes
---(Name, SerialCode, ParentId, Type)
---values
---('Cilindro ruotante', 'CCC111222D', 3, '')
-
---insert into Nodes
---(Name, SerialCode, ParentId, Type)
---values
---('Albero di trasmissione', 'CCC222333D', 3, '')
-
---insert into Nodes
---(Name, SerialCode, ParentId, Type)
---values
---('Cambio', 'CCC333444D', 3, '')
-
---insert into Nodes
---(Name, SerialCode, ParentId, Type)
---values
---('Spinterogeno', 'CCC444555D', 3, '')
-

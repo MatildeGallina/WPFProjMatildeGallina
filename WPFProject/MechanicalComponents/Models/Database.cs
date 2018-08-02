@@ -19,8 +19,7 @@ namespace MechanicalComponents.Models
         {
             return new SqlConnection(_connectionString);
         }
-
-        #region Singleton
+        
         public Database()
         {
             _queryWriter = new NodeQueryWriter();
@@ -32,7 +31,6 @@ namespace MechanicalComponents.Models
         }
 
         public static Database Instance { get; }
-        #endregion
 
         public List<INode> GetNodes(int? parentId)
         {
@@ -120,12 +118,6 @@ namespace MechanicalComponents.Models
                 comm.CommandText = _queryWriter.SetNode(node, parentId);
 
                 node.Id = (int)comm.ExecuteScalar();
-
-                // quando un engine aveva una lista di figli dovevo aggiornargli il parentid
-                //foreach(var child in node.Children)
-                //{
-                //    UpdateParentId(child.Id, node.Id);
-                //}
             }
         }
         
@@ -138,6 +130,20 @@ namespace MechanicalComponents.Models
 
                 comm.CommandType = CommandType.Text;
                 comm.CommandText = _queryWriter.DeleteById(id);
+
+                comm.ExecuteNonQuery();
+            }
+        }
+
+        public void DeleteNodeByParentId(int parentId)
+        {
+            using (var conn = this.CreateConnection())
+            using (var comm = conn.CreateCommand())
+            {
+                conn.Open();
+
+                comm.CommandType = CommandType.Text;
+                comm.CommandText = _queryWriter.DeleteByParentId(parentId);
 
                 comm.ExecuteNonQuery();
             }
@@ -170,26 +176,6 @@ namespace MechanicalComponents.Models
                 comm.ExecuteNonQuery();
             }
         }
-        
-        #region SetChildToSingleNode()
-        //private void SetChildToSingleChildrenNode(int id, SingleChildrenNode parentNode)
-        //{
-        //    using (var conn = this.CreateConnection())
-        //    using (var comm = conn.CreateCommand())
-        //    {
-        //        conn.Open();
-
-        //        comm.CommandType = CommandType.Text;
-        //        comm.CommandText = _queryWriter.GetById(id);
-
-        //        var reader = comm.ExecuteReader();
-        //        reader.Read();
-        //        var node = AddValuesToNode(reader);
-
-        //        parentNode.Children = node;
-        //    }
-        //}
-        #endregion
 
         private void UpdateList(SqlCommand comm, List<INode> nodes)
         {
@@ -200,11 +186,6 @@ namespace MechanicalComponents.Models
                     var node = AddPropertiesToNode(reader, AddValuesToNode(reader));
 
                     nodes.Add(node);
-                }
-
-                foreach(var n in nodes)
-                {
-                    
                 }
             }
         }
@@ -269,7 +250,7 @@ namespace MechanicalComponents.Models
             if (reader["Price"] == DBNull.Value)
                 node.properties.Price = null;
             else
-                node.properties.Price = (decimal?)reader["Price"];
+                node.properties.Price = (double?)reader["Price"];
 
             if (reader["FreeMaintenance"] == DBNull.Value)
                 node.properties.FreeMaintenance = null;
@@ -292,7 +273,7 @@ namespace MechanicalComponents.Models
             if (reader["Price"] == DBNull.Value)
                 node.properties.Price = null;
             else
-                node.properties.Price = (decimal?)reader["Price"];
+                node.properties.Price = (double?)reader["Price"];
 
             if (reader["WarrantyPeriod"] == DBNull.Value)
                 node.properties.WarrantyPeriod = null;
@@ -315,7 +296,7 @@ namespace MechanicalComponents.Models
             if (reader["Price"] == DBNull.Value)
                 node.properties.Price = null;
             else
-                node.properties.Price = (decimal?)reader["Price"];
+                node.properties.Price = (double?)reader["Price"];
 
             if (reader["Material"] == DBNull.Value)
                 node.properties.Material = "";

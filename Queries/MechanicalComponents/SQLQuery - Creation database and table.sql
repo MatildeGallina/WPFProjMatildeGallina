@@ -1,3 +1,7 @@
+drop table Nodes
+drop database MechanicalComponentsDatabase
+
+
 create database MechanicalComponentsDatabase
 go
 
@@ -10,6 +14,12 @@ create table Nodes
 	Name nvarchar(max) not null,
 	SerialCode nvarchar(10) unique not null,
 	ParentId int,
-	IconId int
+	Type nvarchar(max) not null,
+	Brand nvarchar(max),
+	Model nvarchar(max),
+	Price float,
+	FreeMaintenance int,
+	WarrantyPeriod int,
+	Material nvarchar(max),
+	Year int
 )
-

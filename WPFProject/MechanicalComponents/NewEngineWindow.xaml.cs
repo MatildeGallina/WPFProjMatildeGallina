@@ -60,9 +60,6 @@ namespace MechanicalComponents
 
         private void Undo_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var child in _engine.Children)
-                _database.DeleteNode(child.Id);
-
             Cleaning();
             this.Close();
         }

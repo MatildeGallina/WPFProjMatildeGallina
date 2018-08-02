@@ -14,6 +14,7 @@ namespace MechanicalComponents.Models
         List<string> GetSerialCodes();
         void SetNode(NodeModel node, int? parentId);
         void DeleteNode(int id);
+        void DeleteNodeByParentId(int parentId);
         void UpdateParentId(int id, int parentId);
         void UpdateProperties(INode node);
     }

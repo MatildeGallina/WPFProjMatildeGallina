@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MechanicalComponents.Models;
 using System.Data.SqlClient;
 using System.Data;
+using System.IO;
 
 namespace MechanicalComponents.Test
 {
@@ -56,7 +57,7 @@ namespace MechanicalComponents.Test
         IDatabase newDatabase()
         {
             Database database = new Database();
-            database.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MockMechanicalComponentsDatabase;");
+            database.SetConnectionString(File.ReadAllText("DatabaseConnectionString.txt"));
             return database;
         }
 

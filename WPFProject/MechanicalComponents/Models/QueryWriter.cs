@@ -76,6 +76,11 @@ namespace MechanicalComponents.Models
             return $"delete from Nodes where Id = {id}";
         }
 
+        public string DeleteByParentId(int parentId)
+        {
+            return $"delete from Nodes where ParentId = {parentId}";
+        }
+
         public string UpdateParentId(int id, int parentId)
         {
             return "update Nodes " +
@@ -93,7 +98,7 @@ namespace MechanicalComponents.Models
                     return "update Nodes " +
                         $"set Brand = '{IsStringEmprty(multiNode.properties.Brand)}', " +
                         $"Model = '{IsStringEmprty(multiNode.properties.Model)}', " +
-                        $"Price = {IsDecimalNullValue(multiNode.properties.Price)}, " +
+                        $"Price = {IsDoubleNullValue(multiNode.properties.Price)}, " +
                         $"FreeMaintenance = {IsIntNullValue(multiNode.properties.FreeMaintenance)} " +
                         $"where Id = {multiNode.Id}";
                 case "SingleChildrenNode":
@@ -101,7 +106,7 @@ namespace MechanicalComponents.Models
                     return "update Nodes " +
                         $"set Brand = '{IsStringEmprty(singleNode.properties.Brand)}', " +
                         $"Model = '{(singleNode.properties.Model)}', " +
-                        $"Price = {IsDecimalNullValue(singleNode.properties.Price)}, " +
+                        $"Price = {IsDoubleNullValue(singleNode.properties.Price)}, " +
                         $"WarrantyPeriod = {IsIntNullValue(singleNode.properties.WarrantyPeriod)} " +
                         $"where Id = {singleNode.Id}";
                 case "NullChildrenNode":
@@ -109,7 +114,7 @@ namespace MechanicalComponents.Models
                     return "update Nodes " +
                         $"set Brand = '{IsStringEmprty(nullNode.properties.Brand)}', " +
                         $"Model = '{IsStringEmprty(nullNode.properties.Model)}', " +
-                        $"Price = {IsDecimalNullValue(nullNode.properties.Price)}, " +
+                        $"Price = {IsDoubleNullValue(nullNode.properties.Price)}, " +
                         $"Material = {IsStringEmprty(nullNode.properties.Material)}, " +
                         $"Year = {IsIntNullValue(nullNode.properties.Year)} " +
                         $"where Id = {nullNode.Id}";
@@ -126,7 +131,7 @@ namespace MechanicalComponents.Models
             return i.ToString();
         }
 
-        private string IsDecimalNullValue(decimal? d)
+        private string IsDoubleNullValue(double? d)
         {
             if (d == null)
                 return "NULL";
