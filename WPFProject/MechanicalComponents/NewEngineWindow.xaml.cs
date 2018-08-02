@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,7 +33,7 @@ namespace MechanicalComponents
         public Database ConnectionToDatabase()
         {
             Database database = new Database();
-            database.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MockMechanicalComponentsDatabase;");
+            database.SetConnectionString(File.ReadAllText("DatabaseConnectionString.txt"));
             return database;
         }
 
