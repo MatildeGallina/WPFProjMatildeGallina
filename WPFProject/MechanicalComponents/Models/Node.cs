@@ -43,25 +43,28 @@ namespace MechanicalComponents.Models
             : base(database)
         {
             Icon = @"Icons\MultiChildrenNode.jpg";
-            _Children = new Lazy<List<INode>>(LoadChildren);
+            _Children = new Lazy<ObservableCollection<INode>>(LoadChildren);
             properties = new MultiChildrenNodeProperties();
         }
         public MultiChildrenNodeProperties properties { get; set; }
 
-        public List<INode> Children
+        public ObservableCollection<INode> Children
         {
             get { return _Children.Value; }
+            set { }
         }
 
-        private readonly Lazy<List<INode>> _Children;
+        private readonly Lazy<ObservableCollection<INode>> _Children;
 
-        public List<INode> LoadChildren()
+        public ObservableCollection<INode> LoadChildren()
         {
             var list = _database.GetNodes(this.Id);
             foreach (Node n in list)
                 n._database = this._database;
 
-            return list;
+            var oc = new ObservableCollection<INode>(list);
+
+            return oc;
         }
         
         public bool WereChildrenLoaded()
@@ -81,7 +84,7 @@ namespace MechanicalComponents.Models
             : base(database)
         {
             Icon = @"Icons\SingleChildrenNode.jpg";
-            _Children = new Lazy<INode>(LoadChildren);
+            _Children = new Lazy<ObservableCollection<INode>>(LoadChildren);
             //_Children = LoadChildren();
             properties = new SingleChildrenNodeProperties();
         }
@@ -104,22 +107,25 @@ namespace MechanicalComponents.Models
         //}
 
         #region prop Children is not a list
-        public INode Children
+        public ObservableCollection<INode> Children
         {
             get { return _Children.Value; }
+            set { }
         }
 
-        private readonly Lazy<INode> _Children;
+        private readonly Lazy<ObservableCollection<INode>> _Children;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public INode LoadChildren()
+        public ObservableCollection<INode> LoadChildren()
         {
             var list = _database.GetNodes(this.Id);
             foreach (Node n in list)
                 n._database = this._database;
 
-            return list.FirstOrDefault();
+            var oc = new ObservableCollection<INode>(list);
+
+            return oc;
         }
         #endregion
 
@@ -127,7 +133,7 @@ namespace MechanicalComponents.Models
         {
             //if (LoadChildren().Count > 0)
             //    return false;
-            if (LoadChildren() != null)
+            if (LoadChildren().Count > 0)
                 return false;
             else
                 return true;

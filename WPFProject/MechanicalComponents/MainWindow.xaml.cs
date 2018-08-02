@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,7 +34,7 @@ namespace MechanicalComponents
         public Database ConnectionToDatabase()
         {
             Database database = new Database();
-            database.SetConnectionString(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MockMechanicalComponentsDatabase;");
+            database.SetConnectionString(File.ReadAllText("DatabaseConnectionString.txt"));
             return database;
         }
 
@@ -85,18 +86,36 @@ namespace MechanicalComponents
             var selectedNode = RetriveCastedNode();
             // come fare il refresh di un ramo del treeview
 
-            throw new NotImplementedException();
+            switch (RetriveCastedNode().GetType().Name)
+            {
+                case "MultiChildrenNode":
+                    var multiNode = (MultiChildrenNode)EnginesTreeView.SelectedItem;
+                    var refreshedChildren = _database.GetNodes(multiNode.Id);
+                    foreach (Node c in refreshedChildren)
+                        c._database = _database;
+                    multiNode.Children = new ObservableCollection<INode>(refreshedChildren);
+                    break;
+                case "SingleChildrenNode":
+                    var singleNode = (SingleChildrenNode)EnginesTreeView.SelectedItem;
+                    var refreshedChild = _database.GetNodes(singleNode.Id);
+                    foreach (Node c in refreshedChild)
+                        c._database = _database;
+                    singleNode.Children = new ObservableCollection<INode>(refreshedChild);
+                    break;
+                default:
+                    break;
+            }
+            
+            
+            InitializeTreeview();
+
+            //throw new NotImplementedException();
         }
 
         private void AlterProperties_Click(object sender, RoutedEventArgs e)
         {
             SetPropertiesWindow setProperties = new SetPropertiesWindow(RetriveCastedNode());
             setProperties.ShowDialog();
-
-            // riassegrare i valori inviati dalla setPropertyWindow all'item selezionato
-            // forse serve aggiornare
-
-            //throw new NotImplementedException();
         }
         
         private void VisibilitySpecifications(INode selectedNode)

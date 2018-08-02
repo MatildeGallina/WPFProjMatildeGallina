@@ -9,6 +9,7 @@
     <Window.Resources>
         <Style TargetType="Grid">
             <Setter Property="Margin" Value="5"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         </Style>
         <Style TargetType="StackPanel">
             <Setter Property="Margin" Value="5"/>
@@ -19,11 +20,12 @@
             <Setter Property="Margin" Value="5" />
             <Setter Property="FontSize" Value="15"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         </Style>
         <Style TargetType="TreeViewItem">
             <Setter Property="Margin" Value="5"/>
-            <Setter Property="Padding" Value="5"/>
-        </Style>
+                    <Setter Property="Padding" Value="5"/>
+                </Style>
         <Style TargetType="Button">
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Padding" Value="20,5"/>
@@ -57,22 +59,21 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="0" Grid.Row="0">
-            <TreeView Name="EnginesTreeView"
-                      SelectedItemChanged="EnginesTreeView_SelectedItemChanged">
-                <TreeView.Resources>
-                    <HierarchicalDataTemplate
-                                DataType="{x:Type local:Node}"
-                                ItemsSource="{Binding Children}">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="{Binding Icon}"/>
-                            <TextBlock Text="{Binding Name}" Name="ItemName" Margin="5"/>
-                        </StackPanel>
-                    </HierarchicalDataTemplate>
-                </TreeView.Resources>
-            </TreeView>
-        </StackPanel>
-        
+        <TreeView Grid.Column="0" Grid.Row="0"
+                  Name="EnginesTreeView"
+                  SelectedItemChanged="EnginesTreeView_SelectedItemChanged">
+            <TreeView.Resources>
+                <HierarchicalDataTemplate
+                            DataType="{x:Type local:Node}"
+                            ItemsSource="{Binding Children}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{Binding Icon}"/>
+                        <TextBlock Text="{Binding Name}" Name="ItemName" Margin="5"/>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.Resources>
+        </TreeView>
+
         <StackPanel Grid.Column="0" Grid.Row="1"
                     Orientation="Horizontal">
             <Button Name="Refresh" Content="Refresh"
@@ -110,7 +111,7 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        
+
                         <StackPanel Grid.Row="0"
                                     Name="CommonProperites"
                                     Visibility="Hidden" Orientation="Horizontal">
@@ -155,7 +156,7 @@
                 </StackPanel>
             </Grid>
         </StackPanel>
-        
+
         <StackPanel Grid.Row="1" Grid.Column="1"
                     Name="SelectedItemButtons" Visibility="Hidden"
                     Orientation="Horizontal" HorizontalAlignment="Right">
